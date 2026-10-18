@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="พื้นที่เก็บผลงานและบันทึกส่วนตัวของ ธีร์ ดำรงศิริชัย (Thee Dumrongsirichai)">
+    <title>theesirichai | Home</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600&family=Inter:wght@300;400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=4">
+</head>
+<body>
+
+    <aside class="left-sidebar">
+        <img src="picture/me.jpg" alt="Profile Image" class="profile-img">
+        
+        <h1 class="profile-name">Thee dumrongsirichai</h1>
+        <p class="profile-bio">Computer Science Student. Interested in Web Development.</p>
+        
+        <div class="social-links">
+            <a href="https://www.facebook.com/thee.dumrongsirichai.850503" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://github.com/theesirichai" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i></a>
+            <a href="https://www.instagram.com/theesirichai/" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@theesirichai" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+    </aside>
+
+    <main class="right-content">
+        
+        <div class="top-nav-row">
+            <nav class="nav-menu">
+                <a href="index.html" class="active">Home</a>
+                <a href="posts.html">Posts</a>
+                <a href="about.html">About Me</a>
+                <a href="project.html">Project</a>
+            </nav>
+
+            <div class="admin-bar">
+                <span id="admin-status"></span>
+                <button type="button" id="btn-edit-home" class="btn-minimal primary" style="display: none;">
+                    <i class="fa-solid fa-pen"></i> แก้ไขหน้า Home / การ์ด
+                </button>
+                <button type="button" id="btn-open-login" class="btn-minimal" title="สำหรับเจ้าของเว็บเพื่อแก้ไขหน้า Home & การ์ดโปรไฟล์">
+                    <i class="fa-solid fa-lock"></i> Admin
+                </button>
+                <button type="button" id="btn-logout" class="btn-minimal" style="display: none;">
+                    <i class="fa-solid fa-right-from-bracket"></i> ออก
+                </button>
+            </div>
+        </div>
+
+        <section class="home-intro">
+            <h2 id="home-title-display" class="year-title">Welcome to my space 👋</h2>
+            <p id="home-intro-display">ยินดีต้อนรับเข้าสู่พื้นที่เก็บผลงานและบันทึกส่วนตัวของผมครับ
+
+ผมสนใจและกำลังศึกษาเกี่ยวกับการพัฒนาเว็บไซต์ ดีไซน์สไตล์มินิมอล รวมถึงการจัดการระบบเซิร์ฟเวอร์ขนาดเล็ก (HomeLab) และเทคโนโลยีคอมพิวเตอร์ต่างๆ เว็บนี้เขียนขึ้นด้วย HTML และ CSS แบบคลีนๆ เพื่อเน้นความเบาและโหลดหน้าเว็บได้เร็วที่สุด</p>
+
+            <!-- การ์ดโปรไฟล์สไตล์ LP Underground Digital Passport (เบาและคลีน) -->
+            <div class="lpu-card-section">
+                <div class="lpu-card" id="lpu-passport-card">
+                    <div class="lpu-card-header">
+                        <div class="lpu-brand">
+                            <span class="lpu-dot"></span>
+                            <span id="card-club-display">THEE UNDERGROUND</span>
+                        </div>
+                        <span class="lpu-badge" id="card-badge-display">PASSPORT PLUS</span>
+                    </div>
+
+                    <div class="lpu-card-body">
+                        <div class="lpu-photo-wrap">
+                            <div class="lpu-photo-frame">
+                                <img id="card-photo-display" src="picture/me.jpg" alt="Profile Passport Photo" class="lpu-photo">
+                                <span class="lpu-corner tl"></span>
+                                <span class="lpu-corner tr"></span>
+                                <span class="lpu-corner bl"></span>
+                                <span class="lpu-corner br"></span>
+                            </div>
+                            <div class="lpu-seal">OFFICIAL<br>VERIFIED<br>2026</div>
+                        </div>
+
+                        <div class="lpu-info">
+                            <span class="lpu-label">PASSPORT HOLDER</span>
+                            <h3 id="card-name-en-display" class="lpu-holder-en">THEE DUMRONGSIRICHAI</h3>
+                            <div id="card-name-th-display" class="lpu-holder-th">ธีร์ ดำรงศิริชัย</div>
+
+                            <div class="lpu-grid">
+                                <div>
+                                    <span class="lpu-label">REGISTRATION NO.</span>
+                                    <span id="card-reg-display" class="lpu-grid-val">TU-8505-CS</span>
+                                </div>
+                                <div>
+                                    <span class="lpu-label">SPECIALIZATION</span>
+                                    <span id="card-spec-display" class="lpu-grid-val accent">DEV &amp; SYSTEMS</span>
+                                </div>
+                                <div>
+                                    <span class="lpu-label">STATUS</span>
+                                    <span id="card-status-display" class="lpu-grid-val accent">● ACTIVE</span>
+                                </div>
+                                <div>
+                                    <span class="lpu-label">AFFILIATION</span>
+                                    <span id="card-affil-display" class="lpu-grid-val">KKW SCHOOL</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lpu-card-footer">
+                        <div>
+                            <div class="lpu-barcode-bars"></div>
+                            <span id="card-mrz-display" class="lpu-mrz">P&lt;THTHEE&lt;&lt;DUMRONGSIRICHAI&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;8505</span>
+                        </div>
+                        <span class="lpu-label" style="color: #22c55e;">VERIFIED ID // 2026</span>
+                    </div>
+                </div>
+
+                <div class="lpu-card-actions">
+                    <button type="button" id="btn-download-card" class="btn-minimal primary">
+                        <i class="fa-solid fa-download"></i> ดาวน์โหลดการ์ดโปรไฟล์ (.PNG)
+                    </button>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">Recent Posts</h3>
+            <ul id="recent-posts-list" class="post-list">
+                <li class="post-item">
+                    <a href="post.html?id=post3" class="post-link">เล่าความรู้สึกหลังเปลี่ยนมาทำ vlog แทน การแคสเกม</a>
+                    <span class="post-date">June 2</span>
+                </li>
+                <li class="post-item">
+                    <a href="post.html?id=post2" class="post-link">My Experience at the Science Day</a>
+                    <span class="post-date">May 25</span>
+                </li>
+                <li class="post-item">
+                    <a href="post.html?id=post1" class="post-link">Experience DJI Osmo Action 4 Creator Combo</a>
+                    <span class="post-date">May 24</span>
+                </li>
+            </ul>
+
+            <p style="margin-top: 28px; display: flex; gap: 24px; flex-wrap: wrap;">
+                <a href="posts.html" class="inline-cta">ดูบันทึกทั้งหมด →</a>
+                <a href="project.html" class="inline-cta">ดูความคืบหน้าโปรเจกต์ →</a>
+            </p>
+        </section>
+
+    </main>
+
+    <!-- Modal สำหรับล็อกอิน -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">Admin Login</h3>
+                <button type="button" id="btn-close-login" class="modal-close">&times;</button>
+            </div>
+
+            <p id="login-error" class="form-error"></p>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" class="form-input" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-minimal primary" style="width: 100%; justify-content: center; padding: 9px;">
+                    เข้าสู่ระบบด้วย Email
+                </button>
+            </form>
+
+            <div class="modal-divider">— หรือ —</div>
+
+            <button type="button" id="btn-google-login" class="btn-minimal" style="width: 100%; justify-content: center; padding: 9px;">
+                <i class="fa-brands fa-google"></i> เข้าสู่ระบบด้วย Google
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal สำหรับแก้ไขหน้า Home & การ์ดโปรไฟล์ (LPU Passport) -->
+    <div id="home-modal" class="modal-overlay">
+        <div class="modal-box wide">
+            <div class="modal-header">
+                <h3 class="modal-title">แก้ไขหน้า Home &amp; การ์ดโปรไฟล์</h3>
+                <button type="button" id="btn-close-home" class="modal-close">&times;</button>
+            </div>
+
+            <form id="home-form">
+                <div class="form-group">
+                    <label for="home-title-input">หัวข้อทักทายหน้า Home</label>
+                    <input type="text" id="home-title-input" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="home-intro-input">ข้อความแนะนำตัวหน้า Home</label>
+                    <textarea id="home-intro-input" class="form-input" rows="4" required></textarea>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid #383a3e; margin: 18px 0;">
+                <p style="color: #d1d4db; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px;">ข้อมูลในการ์ดโปรไฟล์ (Underground Passport)</p>
+
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 180px;">
+                        <label for="card-name-en-input">ชื่อภาษาอังกฤษ (Holder Name)</label>
+                        <input type="text" id="card-name-en-input" class="form-input" required>
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 180px;">
+                        <label for="card-name-th-input">ชื่อภาษาไทย</label>
+                        <input type="text" id="card-name-th-input" class="form-input" required>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 160px;">
+                        <label for="card-club-input">ชื่อหัวการ์ด (มุมซ้ายบน)</label>
+                        <input type="text" id="card-club-input" class="form-input" required>
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 160px;">
+                        <label for="card-badge-input">ป้ายสถานะการ์ด (มุมขวาบน)</label>
+                        <input type="text" id="card-badge-input" class="form-input" required>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 160px;">
+                        <label for="card-reg-input">Registration No.</label>
+                        <input type="text" id="card-reg-input" class="form-input" required>
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 160px;">
+                        <label for="card-spec-input">Specialization</label>
+                        <input type="text" id="card-spec-input" class="form-input" required>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 160px;">
+                        <label for="card-status-input">Status</label>
+                        <input type="text" id="card-status-input" class="form-input" required>
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 160px;">
+                        <label for="card-affil-input">Affiliation (โรงเรียน/สังกัด)</label>
+                        <input type="text" id="card-affil-input" class="form-input" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="card-mrz-input">รหัสบาร์โค้ดด้านล่างการ์ด (MRZ Code)</label>
+                    <input type="text" id="card-mrz-input" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label>รูปโปรไฟล์หลัก &amp; รูปในการ์ด (อัปโหลดรูปใหม่ได้)</label>
+                    <div class="image-upload-bar">
+                        <label for="card-photo-file" class="btn-minimal" style="cursor: pointer; margin-bottom: 0;">
+                            <i class="fa-regular fa-image"></i> เปลี่ยนรูปโปรไฟล์ / การ์ด
+                        </label>
+                        <input type="file" id="card-photo-file" accept="image/*" style="display: none;">
+                    </div>
+                    <div id="card-photo-preview-wrap"></div>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid #383a3e; margin: 18px 0;">
+                <p style="color: #d1d4db; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px;">ข้อมูลแถบโปรไฟล์ด้านซ้าย &amp; โซเชียลมีเดีย (ซิงค์ทุกหน้า)</p>
+
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 180px;">
+                        <label for="sidebar-name-input">ชื่อโปรไฟล์ด้านซ้าย</label>
+                        <input type="text" id="sidebar-name-input" class="form-input" required>
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 180px;">
+                        <label for="sidebar-bio-input">คำอธิบายสั้นๆ ด้านซ้าย (Bio)</label>
+                        <input type="text" id="sidebar-bio-input" class="form-input" required>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 180px;">
+                        <label for="sidebar-fb-input"><i class="fa-brands fa-facebook"></i> ลิงก์ Facebook (เว้นว่างเพื่อซ่อน)</label>
+                        <input type="url" id="sidebar-fb-input" class="form-input" placeholder="https://facebook.com/...">
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 180px;">
+                        <label for="sidebar-gh-input"><i class="fa-brands fa-github"></i> ลิงก์ GitHub (เว้นว่างเพื่อซ่อน)</label>
+                        <input type="url" id="sidebar-gh-input" class="form-input" placeholder="https://github.com/...">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 180px;">
+                        <label for="sidebar-ig-input"><i class="fa-brands fa-instagram"></i> ลิงก์ Instagram (เว้นว่างเพื่อซ่อน)</label>
+                        <input type="url" id="sidebar-ig-input" class="form-input" placeholder="https://instagram.com/...">
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 180px;">
+                        <label for="sidebar-yt-input"><i class="fa-brands fa-youtube"></i> ลิงก์ YouTube (เว้นว่างเพื่อซ่อน)</label>
+                        <input type="url" id="sidebar-yt-input" class="form-input" placeholder="https://youtube.com/...">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-minimal primary" style="width: 100%; justify-content: center; padding: 10px; margin-top: 6px;">
+                    บันทึกหน้า Home, การ์ด &amp; โปรไฟล์ด้านซ้าย
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="firebase-projects.js?v=3"></script>
+</body>
+</html>

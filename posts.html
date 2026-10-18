@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="บทความและบันทึกทั้งหมดของ Thee Dumrongsirichai">
+    <title>theesirichai | Posts</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600&family=Inter:wght@300;400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=4">
+</head>
+<body>
+
+    <aside class="left-sidebar">
+        <img src="picture/me.jpg" alt="Profile Image" class="profile-img">
+        
+        <h1 class="profile-name">Thee dumrongsirichai</h1>
+        <p class="profile-bio">Computer Science Student. Interested in Web Development.</p>
+        
+        <div class="social-links">
+            <a href="https://www.facebook.com/thee.dumrongsirichai.850503" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://github.com/theesirichai" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i></a>
+            <a href="https://www.instagram.com/theesirichai/" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@theesirichai" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+    </aside>
+
+    <main class="right-content">
+        
+        <div class="top-nav-row">
+            <nav class="nav-menu">
+                <a href="index.html">Home</a>
+                <a href="posts.html" class="active">Posts</a>
+                <a href="about.html">About Me</a>
+                <a href="project.html">Project</a>
+            </nav>
+
+            <div class="admin-bar">
+                <span id="admin-status"></span>
+                <button type="button" id="btn-add-post" class="btn-minimal primary" style="display: none;">
+                    <i class="fa-solid fa-plus"></i> เขียนบทความ
+                </button>
+                <button type="button" id="btn-open-login" class="btn-minimal" title="สำหรับเจ้าของเว็บเพื่อเขียน/แก้ไขบทความ">
+                    <i class="fa-solid fa-lock"></i> Admin
+                </button>
+                <button type="button" id="btn-logout" class="btn-minimal" style="display: none;">
+                    <i class="fa-solid fa-right-from-bracket"></i> ออก
+                </button>
+            </div>
+        </div>
+
+        <div id="config-notice" class="notice-banner" style="display: none;">
+            💡 <strong>โหมดทดลองใช้งาน:</strong> กดปุ่ม <code>Admin</code> มุมขวาบนเพื่อทดลองเขียนบทความใหม่ แก้ไขบทความเดิม และแนบรูปภาพได้ทันที เมื่อใส่ค่า Firebase ใน <code>firebase-projects.js</code> แล้ว ข้อมูลจะซิงค์ขึ้น Cloud อัตโนมัติครับ
+        </div>
+
+        <section id="posts-container">
+            <p style="color: #61656c;">กำลังโหลดบทความ...</p>
+        </section>
+
+    </main>
+
+    <!-- Modal สำหรับล็อกอิน -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">Admin Login</h3>
+                <button type="button" id="btn-close-login" class="modal-close">&times;</button>
+            </div>
+
+            <p id="login-error" class="form-error"></p>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" class="form-input" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-minimal primary" style="width: 100%; justify-content: center; padding: 9px;">
+                    เข้าสู่ระบบด้วย Email
+                </button>
+            </form>
+
+            <div class="modal-divider">— หรือ —</div>
+
+            <button type="button" id="btn-google-login" class="btn-minimal" style="width: 100%; justify-content: center; padding: 9px;">
+                <i class="fa-brands fa-google"></i> เข้าสู่ระบบด้วย Google
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal สำหรับเขียน/แก้ไขบทความ + แนบรูปภาพ -->
+    <div id="post-modal" class="modal-overlay">
+        <div class="modal-box wide">
+            <div class="modal-header">
+                <h3 id="post-modal-title" class="modal-title">เขียนบทความใหม่</h3>
+                <button type="button" id="btn-close-post" class="modal-close">&times;</button>
+            </div>
+
+            <form id="post-form">
+                <input type="hidden" id="post-id">
+                <div class="form-group">
+                    <label for="post-title-input">หัวข้อบทความ</label>
+                    <input type="text" id="post-title-input" class="form-input" placeholder="เช่น รีวิวการจัดโต๊ะคอม / อัปเดต HomeLab" required>
+                </div>
+
+                <div style="display: flex; gap: 12px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="post-date-input">วันที่แสดงผล (เช่น May 24)</label>
+                        <input type="text" id="post-date-input" class="form-input" placeholder="Oct 18" required>
+                    </div>
+                    <div class="form-group" style="width: 120px;">
+                        <label for="post-year-input">ปี (ค.ศ.)</label>
+                        <input type="text" id="post-year-input" class="form-input" value="2026" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="post-content-input">เนื้อหาบทความ (เว้นบรรทัดเพื่อขึ้นย่อหน้าใหม่)</label>
+                    <textarea id="post-content-input" class="form-input" rows="8" placeholder="พิมพ์เนื้อหาบทความที่นี่..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>รูปภาพประกอบบทความ (เลือกได้หลายรูป ระบบจะย่อขนาดให้อัตโนมัติ)</label>
+                    <div class="image-upload-bar">
+                        <label for="post-image-file" class="btn-minimal" style="cursor: pointer; margin-bottom: 0;">
+                            <i class="fa-regular fa-image"></i> เลือกรูปจากเครื่อง
+                        </label>
+                        <input type="file" id="post-image-file" accept="image/*" multiple style="display: none;">
+                    </div>
+                    <div id="post-image-preview-list" class="image-preview-list"></div>
+                </div>
+
+                <button type="submit" class="btn-minimal primary" style="width: 100%; justify-content: center; padding: 10px; margin-top: 6px;">
+                    บันทึกบทความ
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="firebase-projects.js?v=3"></script>
+</body>
+</html>

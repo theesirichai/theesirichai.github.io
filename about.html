@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ประวัติและความสนใจของ ธีร์ ดำรงศิริชัย (Thee Dumrongsirichai)">
+    <title>theesirichai | About Me</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600&family=Inter:wght@300;400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=4">
+</head>
+<body>
+
+    <aside class="left-sidebar">
+        <img src="picture/me.jpg" alt="Profile Image" class="profile-img">
+        
+        <h1 class="profile-name">Thee dumrongsirichai</h1>
+        <p class="profile-bio">Computer Science Student. Interested in Web Development.</p>
+        
+        <div class="social-links">
+            <a href="https://www.facebook.com/thee.dumrongsirichai.850503" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://github.com/theesirichai" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i></a>
+            <a href="https://www.instagram.com/theesirichai/" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@theesirichai" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+    </aside>
+
+    <main class="right-content">
+        
+        <div class="top-nav-row">
+            <nav class="nav-menu">
+                <a href="index.html">Home</a>
+                <a href="posts.html">Posts</a>
+                <a href="about.html" class="active">About Me</a>
+                <a href="project.html">Project</a>
+            </nav>
+
+            <div class="admin-bar">
+                <span id="admin-status"></span>
+                <button type="button" id="btn-edit-about" class="btn-minimal primary" style="display: none;">
+                    <i class="fa-solid fa-pen"></i> แก้ไข About Me
+                </button>
+                <button type="button" id="btn-open-login" class="btn-minimal" title="สำหรับเจ้าของเว็บเพื่อแก้ไขข้อมูล About Me">
+                    <i class="fa-solid fa-lock"></i> Admin
+                </button>
+                <button type="button" id="btn-logout" class="btn-minimal" style="display: none;">
+                    <i class="fa-solid fa-right-from-bracket"></i> ออก
+                </button>
+            </div>
+        </div>
+
+        <section id="about-content-section" class="home-intro">
+            <h2 class="year-title">About Me</h2>
+            
+            <p id="about-intro-display">
+                สวัสดีครับผมชื่อ <strong>ธีร์ ดำรงศิริชัย</strong> เป็นนักเรียนที่สนใจในด้านวิทยาการคอมพิวเตอร์ (Computer Science) 
+                ชอบศึกษาเกี่ยวกับการเขียนโค้ด การออกแบบเว็บไซต์ และเทคโนโลยีใหม่ๆ พื้นที่ตรงนี้สร้างขึ้นเพื่อรวบรวมสิ่งที่ผมสนใจ บันทึกการเรียนรู้ และโปรเจกต์ต่างๆ ที่ได้ลงมือทำครับ
+            </p>
+
+            <div id="about-gallery-display"></div>
+
+            <h3 class="section-subtitle">Education</h3>
+            <ul id="about-edu-display" class="info-list">
+                <li>• โรงเรียนแก่นนครวิทยาลัย (Kaennakhon Wittayalai School)</li>
+                <li>• มัธยมศึกษาตอนปลาย แผนการเรียนวิทยาศาสตร์-คณิตศาสตร์</li>
+            </ul>
+
+            <h3 class="section-subtitle">Interests & Tech Stack</h3>
+            <ul id="about-tech-display" class="info-list">
+                <li>• <strong>Web Development:</strong> HTML, CSS, JavaScript</li>
+                <li>• <strong>HomeLab & Systems:</strong> Linux (Ubuntu), Docker, CasaOS, SSH Management via Termux</li>
+                <li>• <strong>Hardware Ecosystem:</strong> Xiaomi (HyperOS), Local AI Models (Phi-series, Ollama)</li>
+                <li>• <strong>Networking:</strong> Basic TCP/IP, DNS, DHCP, Basic Setup Mesh Network</li>
+                <li>• <strong>Other Tools:</strong> Git, GitHub, DaVinci Resolve (Video Editing)</li>
+            </ul>
+
+            <h3 class="section-subtitle">Hobbies</h3>
+            <ul id="about-hobbies-display" class="info-list">
+                <li>• <strong>Free Time:</strong> Football, Tennis, Badminton, Gaming, Video Editing</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- Modal สำหรับล็อกอิน -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">Admin Login</h3>
+                <button type="button" id="btn-close-login" class="modal-close">&times;</button>
+            </div>
+
+            <p id="login-error" class="form-error"></p>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" class="form-input" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-minimal primary" style="width: 100%; justify-content: center; padding: 9px;">
+                    เข้าสู่ระบบด้วย Email
+                </button>
+            </form>
+
+            <div class="modal-divider">— หรือ —</div>
+
+            <button type="button" id="btn-google-login" class="btn-minimal" style="width: 100%; justify-content: center; padding: 9px;">
+                <i class="fa-brands fa-google"></i> เข้าสู่ระบบด้วย Google
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal สำหรับแก้ไขหน้า About Me -->
+    <div id="about-modal" class="modal-overlay">
+        <div class="modal-box wide">
+            <div class="modal-header">
+                <h3 class="modal-title">แก้ไขข้อมูล About Me</h3>
+                <button type="button" id="btn-close-about" class="modal-close">&times;</button>
+            </div>
+
+            <form id="about-form">
+                <div class="form-group">
+                    <label for="about-intro-input">แนะนำตัว (Intro)</label>
+                    <textarea id="about-intro-input" class="form-input" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="about-edu-input">การศึกษา (Education — บรรทัดละ 1 ข้อ)</label>
+                    <textarea id="about-edu-input" class="form-input" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="about-tech-input">ความสนใจ & Tech Stack (บรรทัดละ 1 ข้อ ใช้เครื่องหมาย : เพื่อทำตัวหนาหัวข้อได้)</label>
+                    <textarea id="about-tech-input" class="form-input" rows="6" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="about-hobbies-input">งานอดิเรก (Hobbies — บรรทัดละ 1 ข้อ)</label>
+                    <textarea id="about-hobbies-input" class="form-input" rows="2" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>รูปภาพประกอบในหน้า About Me (ถ้ามี)</label>
+                    <div class="image-upload-bar">
+                        <label for="about-image-file" class="btn-minimal" style="cursor: pointer; margin-bottom: 0;">
+                            <i class="fa-regular fa-image"></i> เลือกรูปจากเครื่อง
+                        </label>
+                        <input type="file" id="about-image-file" accept="image/*" multiple style="display: none;">
+                    </div>
+                    <div id="about-image-preview-list" class="image-preview-list"></div>
+                </div>
+
+                <button type="submit" class="btn-minimal primary" style="width: 100%; justify-content: center; padding: 10px; margin-top: 6px;">
+                    บันทึกหน้า About Me
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="firebase-projects.js?v=3"></script>
+</body>
+</html>

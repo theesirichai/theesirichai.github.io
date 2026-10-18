@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="โปรเจกต์และความคืบหน้าในการพัฒนาของ Thee Dumrongsirichai">
+    <title>theesirichai | Project</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600&family=Inter:wght@300;400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=4">
+</head>
+<body>
+
+    <aside class="left-sidebar">
+        <img src="picture/me.jpg" alt="Profile Image" class="profile-img">
+        
+        <h1 class="profile-name">Thee dumrongsirichai</h1>
+        <p class="profile-bio">Computer Science Student. Interested in Web Development.</p>
+        
+        <div class="social-links">
+            <a href="https://www.facebook.com/thee.dumrongsirichai.850503" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://github.com/theesirichai" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i></a>
+            <a href="https://www.instagram.com/theesirichai/" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@theesirichai" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+    </aside>
+
+    <main class="right-content">
+        
+        <div class="top-nav-row">
+            <nav class="nav-menu">
+                <a href="index.html">Home</a>
+                <a href="posts.html">Posts</a>
+                <a href="about.html">About Me</a>
+                <a href="project.html" class="active">Project</a>
+            </nav>
+
+            <div class="admin-bar">
+                <span id="admin-status"></span>
+                <button type="button" id="btn-add-project" class="btn-minimal primary" style="display: none;">
+                    <i class="fa-solid fa-plus"></i> เพิ่มโปรเจกต์
+                </button>
+                <button type="button" id="btn-open-login" class="btn-minimal" title="สำหรับเจ้าของเว็บเพื่อแก้ไข % โปรเจกต์">
+                    <i class="fa-solid fa-lock"></i> Admin
+                </button>
+                <button type="button" id="btn-logout" class="btn-minimal" style="display: none;">
+                    <i class="fa-solid fa-right-from-bracket"></i> ออก
+                </button>
+            </div>
+        </div>
+
+        <section>
+            <h2 class="year-title">Projects & Progress</h2>
+
+            <div id="config-notice" class="notice-banner" style="display: none;">
+                💡 <strong>โหมดทดลองใช้งาน:</strong> ตอนนี้คุณสามารถกดปุ่ม <code>Admin</code> มุมขวาบนเพื่อทดลองล็อกอิน เพิ่มโปรเจกต์ แนบรูป และเลื่อนปรับ <code>%</code> ได้ทันที เมื่อต้องการเชื่อมฐานข้อมูลจริง เพียงนำค่าจาก Firebase Console มาวางในไฟล์ <code>firebase-projects.js</code>
+            </div>
+
+            <div id="project-list" class="project-list">
+                <p style="color: #61656c;">กำลังโหลดข้อมูลโปรเจกต์...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal สำหรับล็อกอิน (Email/Password & Google Sign-In) -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">Admin Login</h3>
+                <button type="button" id="btn-close-login" class="modal-close">&times;</button>
+            </div>
+
+            <p id="login-error" class="form-error"></p>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" class="form-input" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-minimal primary" style="width: 100%; justify-content: center; padding: 9px;">
+                    เข้าสู่ระบบด้วย Email
+                </button>
+            </form>
+
+            <div class="modal-divider">— หรือ —</div>
+
+            <button type="button" id="btn-google-login" class="btn-minimal" style="width: 100%; justify-content: center; padding: 9px;">
+                <i class="fa-brands fa-google"></i> เข้าสู่ระบบด้วย Google
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal สำหรับเพิ่ม/แก้ไขโปรเจกต์ + แนบรูป -->
+    <div id="project-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="project-modal-title" class="modal-title">เพิ่มโปรเจกต์</h3>
+                <button type="button" id="btn-close-project" class="modal-close">&times;</button>
+            </div>
+
+            <form id="project-form">
+                <input type="hidden" id="proj-id">
+                <div class="form-group">
+                    <label for="proj-title">ชื่อโปรเจกต์</label>
+                    <input type="text" id="proj-title" class="form-input" placeholder="เช่น HomeLab Server" required>
+                </div>
+                <div class="form-group">
+                    <label for="proj-tag">หมวดหมู่ / Tech Stack</label>
+                    <input type="text" id="proj-tag" class="form-input" placeholder="เช่น HTML / CSS, Docker, Linux">
+                </div>
+                <div class="form-group">
+                    <label for="proj-desc">รายละเอียดสั้นๆ</label>
+                    <textarea id="proj-desc" class="form-input" rows="3" placeholder="อธิบายสิ่งที่กำลังทำ..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="proj-link">ลิงก์ GitHub / เว็บไซต์ (ถ้ามี)</label>
+                    <input type="url" id="proj-link" class="form-input" placeholder="https://github.com/...">
+                </div>
+                <div class="form-group">
+                    <label for="proj-progress">ความคืบหน้าเริ่มต้น (%)</label>
+                    <input type="number" id="proj-progress" class="form-input" min="0" max="100" value="0" required>
+                </div>
+                <div class="form-group">
+                    <label>รูปภาพโปรเจกต์ (ถ้ามี)</label>
+                    <div class="image-upload-bar">
+                        <label for="proj-image-file" class="btn-minimal" style="cursor: pointer; margin-bottom: 0;">
+                            <i class="fa-regular fa-image"></i> เลือกรูปประกอบ
+                        </label>
+                        <input type="file" id="proj-image-file" accept="image/*" style="display: none;">
+                    </div>
+                    <div id="proj-image-preview-wrap"></div>
+                </div>
+                <button type="submit" class="btn-minimal primary" style="width: 100%; justify-content: center; padding: 9px;">
+                    บันทึกโปรเจกต์
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="firebase-projects.js?v=3"></script>
+</body>
+</html>
