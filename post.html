@@ -3,23 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="บทความและบันทึกของ ธีร์ ดำรงศิริชัย (Thee Dumrongsirichai)">
     <title>Post | theesirichai</title>
+    
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta property="og:site_name" content="theesirichai">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Post | theesirichai">
+    <meta property="og:description" content="บทความและบันทึกของ ธีร์ ดำรงศิริชัย (Thee Dumrongsirichai)">
+    <meta property="og:url" content="https://theesirichai.github.io/post.html">
+    <meta property="og:image" content="https://theesirichai.github.io/favicon.svg">
+    <meta name="twitter:card" content="summary">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600&family=Inter:wght@300;400;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="style.css?v=6">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
 
     <aside class="left-sidebar">
-        <img src="picture/me.jpg" alt="Profile Image" class="profile-img">
-        <h1 class="profile-name">Thee dumrongsirichai</h1>
-        <p class="profile-bio">Computer Science Student. Interested in Web Development.</p>
-        <div class="social-links">
-            <a href="https://www.facebook.com/thee.dumrongsirichai.850503" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i></a>
-            <a href="https://github.com/theesirichai" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i></a>
-            <a href="https://www.instagram.com/theesirichai/" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://www.youtube.com/@theesirichai" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i></a>
-        </div>
+        <img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%20fill%3D%22none%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%231e1f23%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%2278%22%20r%3D%2234%22%20fill%3D%22%23383a3e%22%2F%3E%3Cpath%20d%3D%22M40%20176c0-33.137%2026.863-60%2060-60s60%2026.863%2060%2060%22%20fill%3D%22%23383a3e%22%2F%3E%3C%2Fsvg%3E" alt="Profile Image" class="profile-img">
+        <h1 class="profile-name">THEE D.</h1>
+        <p class="profile-bio">Developer & Creator | TU-8505-CS</p>
+        <div class="social-links"></div>
     </aside>
 
     <main class="right-content">
@@ -111,8 +121,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="post-content-input">เนื้อหาบทความ (เว้นบรรทัดเพื่อขึ้นย่อหน้าใหม่)</label>
+                    <label for="post-content-input">เนื้อหาบทความ (รองรับ Markdown / เว้นบรรทัด)</label>
                     <textarea id="post-content-input" class="form-input" rows="8" required></textarea>
+                    <small style="color: #61656c; font-size: 0.76rem; display: block; margin-top: 5px;">💡 รองรับ Markdown: <code># หัวข้อ</code>, <code>**ตัวหนา**</code>, <code>`โค้ด`</code>, <code>```บล็อกโค้ด```</code>, <code>- รายการ</code>, <code>[ลิงก์](url)</code></small>
                 </div>
 
                 <div class="form-group">
@@ -133,6 +144,6 @@
         </div>
     </div>
 
-    <script type="module" src="firebase-projects.js?v=3"></script>
+    <script type="module" src="firebase-projects.js?v=8"></script>
 </body>
 </html>

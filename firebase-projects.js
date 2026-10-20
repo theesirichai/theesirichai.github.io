@@ -35,116 +35,50 @@ const FIREBASE_CONFIG = {
 const ALLOWED_ADMIN_EMAILS = ["thee3938@gmail.com"];
 
 // ============================================================================
-// 2. ข้อมูลเริ่มต้นของโปรเจกต์และบทความ (Seed Data)
+// 2. โครงสร้างข้อมูลว่างเริ่มต้น (ดึงและบันทึกจาก Firebase Firestore 100% ไม่มีข้อมูล Fixed ทับซ้อน)
 // ============================================================================
-const DEFAULT_PROJECTS = [
-    {
-        id: "proj-portweb",
-        title: "Minimalist Portfolio Website",
-        tag: "HTML / CSS / Firebase",
-        description: "เว็บไซต์พอร์ตโฟลิโอและบล็อกส่วนตัวสไตล์มินิมอล โทนสีมืด เน้นความคลีน โหลดไว และเชื่อมระบบอัปเดตเปอร์เซ็นต์ความคืบหน้า + เขียนบทความบนเว็บแบบเรียลไทม์",
-        link: "https://github.com/theesirichai",
-        image: "",
-        progress: 90,
-        order: 1
-    },
-    {
-        id: "proj-homelab",
-        title: "HomeLab Server & CasaOS Setup",
-        tag: "Linux / Docker / HomeLab",
-        description: "จัดการเซิร์ฟเวอร์ขนาดเล็กในบ้านด้วย Ubuntu และ Docker ผ่าน CasaOS พร้อมตั้งค่าระบบรีโมตจัดการผ่าน SSH บน Termux",
-        link: "",
-        image: "",
-        progress: 70,
-        order: 2
-    },
-    {
-        id: "proj-local-ai",
-        title: "Local AI Playground (Ollama & Phi)",
-        tag: "AI / Self-Hosted",
-        description: "ทดลองรันโมเดลภาษาขนาดเล็ก (Small Language Models) บนเครื่องตัวเองด้วย Ollama เพื่อใช้งานผู้ช่วยส่วนตัวแบบออฟไลน์",
-        link: "",
-        image: "",
-        progress: 45,
-        order: 3
-    }
-];
+const DEFAULT_PROJECTS = [];
 
-const DEFAULT_POSTS = [
-    {
-        id: "post3",
-        title: "เล่าความรู้สึกหลังเปลี่ยนมาทำ vlog แทน การแคสเกม",
-        shortDate: "June 2",
-        fullDate: "June 2, 2026",
-        year: "2026",
-        content: `Hello World! เดี๋ยววันนี้จะมาเล่าการเปลี่ยนแปลงของช่องผมนะครับ 555\n\nสวัสดีครับทุกคน ถ้าพูดถึงช่องนี้ หลายคนคงคุ้นเคยกับเสียงกดคีย์บอร์ด เสียงจอยเกม หรือบรรยากาศการสตรีมเกมลุยด่านลุ้นๆ ที่เราเคยสนุกไปด้วยกันมาตลอด\n\nการนั่งอยู่หน้าจอคอมพิวเตอร์และแชร์ความสนุกในเกมหลักๆ คือความสุขของผมในเวลานั้นเลยครับ แต่พอเวลาผ่านไป ผมเริ่มรู้สึกว่า "โลกข้างนอกหน้าจอมันก็น่าสนุกไม่แพ้กัน" มีหลายสิ่งหลายอย่างในชีวิตประจำวัน ไม่ว่าจะเป็นเรื่องราวที่ไปเจอมา กิจกรรมใหม่ๆ ที่ได้ลองทำ หรือแม้แต่มุมมองเล็กๆ ในวันธรรมดาที่ผมอยากจะบันทึกเก็บไว้ และอยากแบ่งปันให้ทุกคนได้เห็นมากขึ้น\n\nจากเดิมที่เคยแชร์แค่ 'หน้าจอ' ตอนนี้ผมเลยอยากชวนทุกคนมาดู 'หน้าจริง' และเรื่องราวชีวิตของผมผ่านเลนส์กล้องบ้างครับ\n\nการเปลี่ยนมาทำ Vlog ครั้งนี้ อาจจะไม่ได้เห็นผมกดสกิลรัวๆ เหมือนเมื่อก่อน แต่รับรองว่าจะได้เห็นมุมมองใหม่ๆ ความเรียล และเรื่องราวที่สนุกไปอีกแบบแน่นอนครับ ขอบคุณทุกคนที่ซัพพอร์ตกันมาตั้งแต่ยุคเล่นเกม และฝากติดตามก้าวใหม่ในสาย Vlog ของผมด้วยนะครับ! มาลุยไปด้วยกันเด้อบอกเลยว่ามันส์แน่นอนครับ! เจอกันในคลิปใหม่เร็วๆ นี้ครับผม!`,
-        images: [],
-        order: 4
-    },
-    {
-        id: "post2",
-        title: "My Experience at the Science Day",
-        shortDate: "May 25",
-        fullDate: "May 25, 2026",
-        year: "2026",
-        content: `Hello World! เดี๋ยววันนี้จะมาเล่าความดีใจและความเจ็บปวดนะครับ 555\n\nสวัสดีครับผม จริงๆ ก็จะมาเล่าประสบการณ์ไปแข่งวันวิทย์ครั้งแรกตอนขึ้น ม.4 มาครับ เรื่องมันต้องย้อนกลับไปประมาณไม่กี่เดือนก่อน ซึ่งเป็นรายการของพวกห้องพิเศษ พอดีปีนี้พี่ ม.6 ที่ไปแข่งไม่มีคู่ไปแข่งด้วย เพื่อนผมที่อยู่ห้องกิ๊ฟ ม.4 ก็เลยมาชวนผม ซึ่งตอนแรกก็ตอบตกลงไปแบบไม่ได้คิดอะไร\n\nแม้จะมีบางคนแซะว่าคนอย่างผมจริงจังกับอะไรบ้างหรือทำอะไรได้บ้าง แต่ผมก็ไม่ได้เก็บมาคิดมาก แค่กังวลว่าจะพาพี่เขาตกรอบไหม ผมมีเวลาเตรียมตัวประมาณ 1-2 เดือนเพื่ออ่านเนื้อหาไปแข่งตอบคำถามความรู้รอบตัวบวกคำนวณนิดหน่อย โชคดีมากที่พี่คู่แข่งของผมเก่งคำนวณ ส่วนผมถนัดความรู้รอบตัว\n\nพอถึงวันแข่งจริงบรรยากาศในห้องแอร์ก็กดดันนิดหน่อย แข่งไปเรื่อยๆ จนประกาศคะแนน ปรากฏว่าคะแนนเสมอกับอันดับ 2 ต้องไปแข่งรอบตัดสิน แล้วสุดท้ายก็ชนะและได้รับเกียรติบัตรครับ เป็นเรื่องเล่าสั้นๆ และเป็นประสบการณ์ชีวิตครั้งหนึ่ง เดี๋ยวมีแข่งอีกก็จะไปเตรียมตัวครับ เจอกันใหม่บทความหน้าครับ cu!`,
-        images: [],
-        order: 3
-    },
-    {
-        id: "post1",
-        title: "Experience DJI Osmo Action 4 Creator Combo",
-        shortDate: "May 24",
-        fullDate: "May 24, 2026",
-        year: "2026",
-        content: `Hello World! เดี๋ยววันนี้จะมาเล่าความดีใจและความเจ็บปวดนะครับ 555\n\nผมได้ซื้อกล้อง DJI Osmo Action 4 Creator Combo มาเมื่อเดือนที่แล้ว และได้ลองใช้งานมาสักพักแล้วครับ ต้องบอกเลยว่าประทับใจมากๆ กับคุณภาพของวิดีโอที่ได้จากกล้องตัวนี้ ทั้งความคมชัด สีสันสดใส และระบบกันสั่นที่ทำงานได้ดีมากๆ ทำให้การถ่ายวิดีโอสนุกขึ้นเยอะเลยครับ`,
-        images: [],
-        order: 2
-    },
-    {
-        id: "hello-world",
-        title: "My first portfolio website with GitHub Pages",
-        shortDate: "May 24",
-        fullDate: "May 24, 2026",
-        year: "2026",
-        content: `Hello World! ยินดีต้อนรับเข้าสู่เว็บไซต์พอร์ตโฟลิโอเวอร์ชันแรกของผมครับ เว็บนี้เขียนขึ้นเองตั้งแต่ศูนย์ด้วยภาษา HTML และ CSS โดยตั้งใจออกแบบให้มีความมินิมอล โทนสีมืด (Dark Mode) และตัดส่วนประกอบที่ไม่จำเป็นออกทั้งหมดเพื่อให้หน้าเว็บโหลดได้เร็วที่สุด\n\nในอนาคต พื้นที่ตรงนี้จะถูกใช้เป็นบล็อกส่วนตัวสำหรับลงบันทึกโปรเจกต์คอมพิวเตอร์ เรื่องราวเกี่ยวกับระบบ HomeLab หรือเทคโนโลยีใหม่ๆ ที่ผมได้ทดลองเล่น ขอบคุณทุกคนที่แวะเข้ามาเยี่ยมชมครับ!`,
-        images: [],
-        order: 1
-    }
-];
+const DEFAULT_POSTS = [];
 
 const DEFAULT_ABOUT = {
-    id: "__about_me__",
-    intro: "สวัสดีครับผมชื่อ ธีร์ ดำรงศิริชัย เป็นนักเรียนที่สนใจในด้านวิทยาการคอมพิวเตอร์ (Computer Science) ชอบศึกษาเกี่ยวกับการเขียนโค้ด การออกแบบเว็บไซต์ และเทคโนโลยีใหม่ๆ พื้นที่ตรงนี้สร้างขึ้นเพื่อรวบรวมสิ่งที่ผมสนใจ บันทึกการเรียนรู้ และโปรเจกต์ต่างๆ ที่ได้ลงมือทำครับ",
-    education: "โรงเรียนแก่นนครวิทยาลัย (Kaennakhon Wittayalai School)\nมัธยมศึกษาตอนปลาย แผนการเรียนวิทยาศาสตร์-คณิตศาสตร์",
-    techStack: "Web Development: HTML, CSS, JavaScript\nHomeLab & Systems: Linux (Ubuntu), Docker, CasaOS, SSH Management via Termux\nHardware Ecosystem: Xiaomi (HyperOS), Local AI Models (Phi-series, Ollama)\nNetworking: Basic TCP/IP, DNS, DHCP, Basic Setup Mesh Network\nOther Tools: Git, GitHub, DaVinci Resolve (Video Editing)",
-    hobbies: "Free Time: Football, Tennis, Badminton, Gaming, Video Editing",
+    id: "config_about_me",
+    intro: "สวัสดีครับ ผมธีร์ (Thee Dumrongsirichai) ผู้พัฒนาและสร้างสรรค์ระบบเทคโนโลยี เว็บแอปพลิเคชัน และเครื่องมืออำนวยความสะดวก",
+    education: "• Computer Science / Software Engineering\n• Information Technology & System Architecture",
+    techStack: "• Frontend: HTML5, CSS3, JavaScript (ES6+), TypeScript, React, Vite\n• Backend & Cloud: Node.js, Firebase Auth, Firestore, REST APIs\n• Infrastructure & Tools: Linux/Ubuntu Server, Docker, Git",
+    hobbies: "• Coding & Building Web Tools\n• Music Production & Audio Engineering\n• Linux System Administration & Homelab",
     images: [],
     order: -1
 };
 
 const DEFAULT_HOME = {
-    id: "__home_data__",
-    title: "Welcome to my space 👋",
-    intro: "ยินดีต้อนรับเข้าสู่พื้นที่เก็บผลงานและบันทึกส่วนตัวของผมครับ\n\nผมสนใจและกำลังศึกษาเกี่ยวกับการพัฒนาเว็บไซต์ ดีไซน์สไตล์มินิมอล รวมถึงการจัดการระบบเซิร์ฟเวอร์ขนาดเล็ก (HomeLab) และเทคโนโลยีคอมพิวเตอร์ต่างๆ เว็บนี้เขียนขึ้นด้วย HTML และ CSS แบบคลีนๆ เพื่อเน้นความเบาและโหลดหน้าเว็บได้เร็วที่สุด",
-    club: "THEE UNDERGROUND",
-    badge: "PASSPORT PLUS",
+    id: "config_home_data",
+    title: "Hello, I'm Thee",
+    intro: "พื้นที่เก็บบันทึก ความคิด และความคืบหน้าของโปรเจกต์ต่าง ๆ ที่ผมกำลังพัฒนาอยู่",
+    club: "LP UNDERGROUND // 2026",
+    badge: "MEMBER / DEV",
     nameEn: "THEE DUMRONGSIRICHAI",
     nameTh: "ธีร์ ดำรงศิริชัย",
     regNo: "TU-8505-CS",
-    spec: "DEV & SYSTEMS",
-    status: "● ACTIVE",
-    affil: "KKW SCHOOL",
-    mrz: "P<THTHEE<<DUMRONGSIRICHAI<<<<<<<<<<<8505",
+    spec: "FULL-STACK / SYSTEM",
+    status: "ACTIVE",
+    affil: "THEESIRICHAI",
+    mrz: "P<THATHEE<<DUMRONGSIRICHAI<<<<<<<<<<<<<<<<<<<",
     photo: "",
-    sidebarName: "Thee dumrongsirichai",
-    sidebarBio: "Computer Science Student. Interested in Web Development.",
-    fbUrl: "https://www.facebook.com/thee.dumrongsirichai.850503",
+    sidebarName: "THEE D.",
+    sidebarBio: "Developer & Creator | TU-8505-CS",
+    fbUrl: "",
     ghUrl: "https://github.com/theesirichai",
-    igUrl: "https://www.instagram.com/theesirichai/",
-    ytUrl: "https://www.youtube.com/@theesirichai",
+    igUrl: "",
+    ytUrl: "",
     order: -2
 };
+
+const DEFAULT_AVATAR_SVG =
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none"><rect width="200" height="200" fill="#1e1f23"/><circle cx="100" cy="78" r="34" fill="#383a3e"/><path d="M40 176c0-33.137 26.863-60 60-60s60 26.863 60 60" fill="#383a3e"/></svg>`
+    );
 
 // ============================================================================
 // 3. ตรวจสอบสถานะการตั้งค่า Firebase
@@ -178,7 +112,7 @@ function isAuthorized(user) {
 // ============================================================================
 // 4. ระบบย่อและบีบอัดรูปภาพอัตโนมัติ (ไม่ต้องเสียเงินเปิด Firebase Storage!)
 // ============================================================================
-function compressImageFile(file, maxWidth = 1000, quality = 0.75) {
+function compressImageFile(file, maxWidth = 1280, quality = 0.82) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (ev) => {
@@ -196,7 +130,10 @@ function compressImageFile(file, maxWidth = 1000, quality = 0.75) {
                 const ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0, width, height);
                 // แปลงเป็น WebP หรือ JPEG ขนาดเล็ก (~40-80KB) เก็บใน Firestore ได้ทันที
-                const dataUrl = canvas.toDataURL("image/webp", quality);
+                let dataUrl = canvas.toDataURL("image/webp", quality);
+                if (!dataUrl.startsWith("data:image/webp")) {
+                    dataUrl = canvas.toDataURL("image/jpeg", quality);
+                }
                 resolve(dataUrl);
             };
             img.onerror = reject;
@@ -210,9 +147,13 @@ function compressImageFile(file, maxWidth = 1000, quality = 0.75) {
 // ============================================================================
 // 5. การแสดงผลหน้าบทความ (Posts List, Recent Posts, Single Post View)
 // ============================================================================
+function isConfigDocId(id) {
+    return id === "config_about_me" || id === "config_home_data" || id === "__about_me__" || id === "__home_data__";
+}
+
 function getSortedPosts() {
     return [...postsData]
-        .filter((p) => p.id !== "__about_me__" && p.id !== "__home_data__")
+        .filter((p) => !isConfigDocId(p.id))
         .sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
 }
 
@@ -332,10 +273,19 @@ function renderSinglePostView() {
     document.title = `${post.title} | theesirichai`;
     const canEdit = isAuthorized(currentUser);
 
-    const paragraphs = String(post.content || "")
-        .split(/\n\s*\n/)
-        .map((para) => `<p>${escapeHtml(para.trim())}</p>`)
-        .join("");
+    let bodyHtml = "";
+    if (typeof window.marked !== "undefined") {
+        window.marked.setOptions({
+            gfm: true,
+            breaks: true
+        });
+        bodyHtml = window.marked.parse(post.content || "");
+    } else {
+        bodyHtml = String(post.content || "")
+            .split(/\n\s*\n/)
+            .map((para) => `<p>${escapeHtml(para.trim())}</p>`)
+            .join("");
+    }
 
     const galleryHtml =
         post.images && post.images.length > 0
@@ -371,8 +321,40 @@ function renderSinglePostView() {
         <h2 class="year-title post-title">${escapeHtml(post.title)}</h2>
         <p class="post-meta">Published on ${escapeHtml(post.fullDate || post.shortDate || "")}</p>
         ${galleryHtml}
-        ${paragraphs}
+        <div class="post-body">${bodyHtml}</div>
     `;
+
+    // ทำ Syntax Highlighting สำหรับ Code Blocks
+    if (typeof window.hljs !== "undefined") {
+        articleContainer.querySelectorAll("pre code").forEach((block) => {
+            window.hljs.highlightElement(block);
+        });
+    }
+
+    // เพิ่มปุ่ม Copy Code บน <pre>
+    articleContainer.querySelectorAll("pre").forEach((pre) => {
+        if (pre.querySelector(".copy-code-btn")) return;
+        const copyBtn = document.createElement("button");
+        copyBtn.type = "button";
+        copyBtn.className = "copy-code-btn";
+        copyBtn.innerHTML = `<i class="fa-regular fa-copy"></i> Copy`;
+        copyBtn.addEventListener("click", async () => {
+            const codeEl = pre.querySelector("code");
+            const textToCopy = codeEl ? codeEl.innerText : pre.innerText;
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                copyBtn.innerHTML = `<i class="fa-solid fa-check"></i> Copied!`;
+                copyBtn.classList.add("copied");
+                setTimeout(() => {
+                    copyBtn.innerHTML = `<i class="fa-regular fa-copy"></i> Copy`;
+                    copyBtn.classList.remove("copied");
+                }, 2000);
+            } catch (err) {
+                console.error("Clipboard copy error:", err);
+            }
+        });
+        pre.appendChild(copyBtn);
+    });
 }
 
 // ============================================================================
@@ -548,7 +530,6 @@ async function upsertProject(projectObj) {
     const idx = projectsData.findIndex((p) => p.id === projectObj.id);
     if (idx >= 0) projectsData[idx] = projectObj;
     else projectsData.push(projectObj);
-    saveLocalData();
     renderProjects();
 
     if (isFirebaseConfigured && db) {
@@ -557,16 +538,13 @@ async function upsertProject(projectObj) {
             flashStatus("บันทึกโปรเจกต์ขึ้น Cloud แล้ว ✓");
         } catch (err) {
             console.error(err);
-            flashStatus("บันทึกในเครื่องแล้ว (รอเปิด Firestore Rules)");
+            alert("บันทึกโปรเจกต์ขึ้น Firebase ไม่สำเร็จ: " + err.message);
         }
-    } else {
-        flashStatus("บันทึกโปรเจกต์แล้ว ✓");
     }
 }
 
 async function deleteProject(id) {
     projectsData = projectsData.filter((p) => p.id !== id);
-    saveLocalData();
     renderProjects();
 
     if (isFirebaseConfigured && db) {
@@ -575,10 +553,8 @@ async function deleteProject(id) {
             flashStatus("ลบโปรเจกต์แล้ว ✓");
         } catch (err) {
             console.error(err);
-            flashStatus("ลบในเครื่องแล้ว (รอเปิด Firestore Rules)");
+            alert("ลบโปรเจกต์บน Firebase ไม่สำเร็จ: " + err.message);
         }
-    } else {
-        flashStatus("ลบโปรเจกต์แล้ว ✓");
     }
 }
 
@@ -586,7 +562,6 @@ async function upsertPost(postObj) {
     const idx = postsData.findIndex((p) => p.id === postObj.id);
     if (idx >= 0) postsData[idx] = postObj;
     else postsData.push(postObj);
-    saveLocalData();
     renderPostsList();
     renderSinglePostView();
 
@@ -596,16 +571,13 @@ async function upsertPost(postObj) {
             flashStatus("บันทึกบทความขึ้น Cloud แล้ว ✓");
         } catch (err) {
             console.error(err);
-            flashStatus("บันทึกในเครื่องแล้ว (รอเปิด Firestore Rules)");
+            alert("บันทึกบทความขึ้น Firebase ไม่สำเร็จ: " + err.message);
         }
-    } else {
-        flashStatus("บันทึกบทความแล้ว ✓");
     }
 }
 
 async function deletePost(id) {
     postsData = postsData.filter((p) => p.id !== id);
-    saveLocalData();
     renderPostsList();
 
     if (isFirebaseConfigured && db) {
@@ -614,10 +586,8 @@ async function deletePost(id) {
             flashStatus("ลบบทความแล้ว ✓");
         } catch (err) {
             console.error(err);
-            flashStatus("ลบในเครื่องแล้ว (รอเปิด Firestore Rules)");
+            alert("ลบบทความบน Firebase ไม่สำเร็จ: " + err.message);
         }
-    } else {
-        flashStatus("ลบบทความแล้ว ✓");
     }
 }
 
@@ -664,20 +634,17 @@ function renderAboutMe() {
 }
 
 async function upsertAbout(newAbout) {
-    aboutData = { ...DEFAULT_ABOUT, ...newAbout, id: "__about_me__", order: -1 };
-    saveLocalData();
+    aboutData = { ...DEFAULT_ABOUT, ...newAbout, id: "config_about_me", order: -1 };
     renderAboutMe();
 
     if (isFirebaseConfigured && db) {
         try {
-            await setDoc(doc(db, "portweb_posts", "__about_me__"), aboutData, { merge: true });
-            flashStatus("บันทึกหน้า About Me แล้ว ✓");
+            await setDoc(doc(db, "portweb_posts", "config_about_me"), aboutData, { merge: true });
+            flashStatus("บันทึกหน้า About Me ขึ้น Cloud แล้ว ✓");
         } catch (err) {
             console.error(err);
-            flashStatus("บันทึกในเครื่องแล้ว (รอเปิด Firestore Rules)");
+            alert("บันทึกหน้า About Me ขึ้น Firebase ไม่สำเร็จ: " + err.message);
         }
-    } else {
-        flashStatus("บันทึกหน้า About Me แล้ว ✓");
     }
 }
 
@@ -691,7 +658,7 @@ function renderSidebarProfile() {
     const socialEl = sidebarEl.querySelector(".social-links");
 
     if (imgEl) {
-        imgEl.src = homeData.photo || "picture/me.jpg";
+        imgEl.src = homeData.photo || DEFAULT_AVATAR_SVG;
     }
     if (nameEl) {
         nameEl.textContent = homeData.sidebarName ?? DEFAULT_HOME.sidebarName;
@@ -772,25 +739,22 @@ function renderHomeAndCard() {
 
     const photoEl = document.getElementById("card-photo-display");
     if (photoEl) {
-        photoEl.src = homeData.photo || "picture/me.jpg";
+        photoEl.src = homeData.photo || DEFAULT_AVATAR_SVG;
     }
 }
 
 async function upsertHome(newHome) {
-    homeData = { ...DEFAULT_HOME, ...homeData, ...newHome, id: "__home_data__", order: -2 };
-    saveLocalData();
+    homeData = { ...DEFAULT_HOME, ...homeData, ...newHome, id: "config_home_data", order: -2 };
     renderHomeAndCard();
 
     if (isFirebaseConfigured && db) {
         try {
-            await setDoc(doc(db, "portweb_posts", "__home_data__"), homeData, { merge: true });
-            flashStatus("บันทึกข้อมูลเรียบร้อย ✓");
+            await setDoc(doc(db, "portweb_posts", "config_home_data"), homeData, { merge: true });
+            flashStatus("บันทึกข้อมูลขึ้น Cloud เรียบร้อย ✓");
         } catch (err) {
             console.error(err);
-            flashStatus("บันทึกในเครื่องแล้ว (รอเปิด Firestore Rules)");
+            alert("บันทึกข้อมูลหน้า Home ขึ้น Firebase ไม่สำเร็จ: " + err.message);
         }
-    } else {
-        flashStatus("บันทึกข้อมูลเรียบร้อย ✓");
     }
 }
 
@@ -978,48 +942,42 @@ async function downloadPassportCardPng() {
     link.click();
 }
 
-function loadLocalData() {
+let rescuedLocalHome = null;
+
+function clearAllLegacyLocalStorage() {
+    // กู้เฉพาะกรณีที่เครื่องคอมเคยอัปโหลดรูปโปรไฟล์ (Base64 data:image) ค้างไว้ก่อนย้ายขึ้น Firebase
     try {
-        const rawProj = localStorage.getItem("portweb_projects_local");
-        projectsData = rawProj ? JSON.parse(rawProj) : structuredClone(DEFAULT_PROJECTS);
+        const rawHome = localStorage.getItem("portweb_cloud_home_v2") || localStorage.getItem("portweb_home_local");
+        if (rawHome) {
+            const parsed = JSON.parse(rawHome);
+            if (parsed && typeof parsed.photo === "string" && parsed.photo.startsWith("data:image")) {
+                rescuedLocalHome = { ...DEFAULT_HOME, ...parsed, id: "config_home_data", order: -2 };
+            }
+        }
     } catch {
-        projectsData = structuredClone(DEFAULT_PROJECTS);
+        // ignore
     }
 
-    try {
-        const rawPosts = localStorage.getItem("portweb_posts_local");
-        postsData = rawPosts ? JSON.parse(rawPosts) : structuredClone(DEFAULT_POSTS);
-    } catch {
-        postsData = structuredClone(DEFAULT_POSTS);
-    }
+    // ล้างแคชในเครื่องทั้งหมด 100% เพื่อไม่ให้ข้อมูลเก่าในเบราว์เซอร์มาทับข้อมูลจาก Firebase
+    localStorage.removeItem("portweb_projects_local");
+    localStorage.removeItem("portweb_posts_local");
+    localStorage.removeItem("portweb_about_local");
+    localStorage.removeItem("portweb_home_local");
+    localStorage.removeItem("portweb_cloud_projects_v2");
+    localStorage.removeItem("portweb_cloud_posts_v2");
+    localStorage.removeItem("portweb_cloud_about_v2");
+    localStorage.removeItem("portweb_cloud_home_v2");
 
-    try {
-        const rawAbout = localStorage.getItem("portweb_about_local");
-        aboutData = rawAbout ? JSON.parse(rawAbout) : structuredClone(DEFAULT_ABOUT);
-    } catch {
-        aboutData = structuredClone(DEFAULT_ABOUT);
-    }
+    projectsData = [];
+    postsData = [];
+    aboutData = structuredClone(DEFAULT_ABOUT);
+    homeData = rescuedLocalHome ? structuredClone(rescuedLocalHome) : structuredClone(DEFAULT_HOME);
 
-    try {
-        const rawHome = localStorage.getItem("portweb_home_local");
-        homeData = rawHome ? JSON.parse(rawHome) : structuredClone(DEFAULT_HOME);
-    } catch {
-        homeData = structuredClone(DEFAULT_HOME);
-    }
-
-    saveLocalData();
     renderProjects();
     renderPostsList();
     renderSinglePostView();
     renderAboutMe();
     renderHomeAndCard();
-}
-
-function saveLocalData() {
-    localStorage.setItem("portweb_projects_local", JSON.stringify(projectsData));
-    localStorage.setItem("portweb_posts_local", JSON.stringify(postsData));
-    localStorage.setItem("portweb_about_local", JSON.stringify(aboutData));
-    localStorage.setItem("portweb_home_local", JSON.stringify(homeData));
 }
 
 function flashStatus(msg) {
@@ -1140,11 +1098,11 @@ function openSidebarQuickModal() {
                     </div>
                     <div class="form-group">
                         <label for="quick-sidebar-name">ชื่อโปรไฟล์ด้านซ้าย</label>
-                        <input type="text" id="quick-sidebar-name" class="form-input" required>
+                        <input type="text" id="quick-sidebar-name" class="form-input">
                     </div>
                     <div class="form-group">
                         <label for="quick-sidebar-bio">คำอธิบายสั้นๆ ด้านซ้าย (Bio)</label>
-                        <input type="text" id="quick-sidebar-bio" class="form-input" required>
+                        <input type="text" id="quick-sidebar-bio" class="form-input">
                     </div>
                     <div class="form-group">
                         <label for="quick-sidebar-fb"><i class="fa-brands fa-facebook"></i> ลิงก์ Facebook (เว้นว่างเพื่อซ่อน)</label>
@@ -1509,7 +1467,7 @@ function setupModalEvents() {
     homeForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
         const payload = {
-            id: "__home_data__",
+            id: "config_home_data",
             title: document.getElementById("home-title-input").value.trim(),
             intro: document.getElementById("home-intro-input").value.trim(),
             nameEn: document.getElementById("card-name-en-input").value.trim(),
@@ -1561,7 +1519,7 @@ function setupModalEvents() {
     aboutForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
         const payload = {
-            id: "__about_me__",
+            id: "config_about_me",
             intro: document.getElementById("about-intro-input").value.trim(),
             education: document.getElementById("about-edu-input").value.trim(),
             techStack: document.getElementById("about-tech-input").value.trim(),
@@ -1677,8 +1635,8 @@ function setupModalEvents() {
 function init() {
     const configNoticeEl = document.getElementById("config-notice");
 
-    // โหลดข้อมูลเริ่มต้นแสดงผลทันที ไม่ต้องรอโหลดหน้าขาว
-    loadLocalData();
+    // ล้างแคชในเครื่องทั้งหมดและแสดงผลเริ่มต้นจาก Firebase 100%
+    clearAllLegacyLocalStorage();
 
     if (isFirebaseConfigured) {
         const app = initializeApp(FIREBASE_CONFIG);
@@ -1689,24 +1647,17 @@ function init() {
 
         const syncMissingConfigDocsIfAdmin = async () => {
             if (!isAuthorized(currentUser) || !latestPostDocs) return;
-            const hasAbout = latestPostDocs.some((d) => d.id === "__about_me__");
-            const hasHome = latestPostDocs.some((d) => d.id === "__home_data__");
+            const hasHome = latestPostDocs.some((d) => d.id === "config_home_data");
             try {
-                if (!hasAbout) {
-                    await setDoc(doc(db, "portweb_posts", "__about_me__"), {
-                        ...DEFAULT_ABOUT,
-                        ...aboutData,
-                        id: "__about_me__",
-                        order: -1
-                    });
-                }
-                if (!hasHome) {
-                    await setDoc(doc(db, "portweb_posts", "__home_data__"), {
+                if (!hasHome && rescuedLocalHome) {
+                    await setDoc(doc(db, "portweb_posts", "config_home_data"), {
                         ...DEFAULT_HOME,
-                        ...homeData,
-                        id: "__home_data__",
+                        ...rescuedLocalHome,
+                        id: "config_home_data",
                         order: -2
                     });
+                    rescuedLocalHome = null;
+                    flashStatus("ซิงค์หน้า Home & รูปโปรไฟล์ขึ้น Cloud แล้ว ✓");
                 }
             } catch (e) {
                 console.warn("Auto-sync config docs:", e);
@@ -1718,60 +1669,44 @@ function init() {
             await syncMissingConfigDocsIfAdmin();
         });
 
-        // ซิงค์ข้อมูลโปรเจกต์แบบเรียลไทม์
+        // ซิงค์ข้อมูลโปรเจกต์แบบเรียลไทม์จาก Firebase 100%
         const qProj = query(collection(db, "portweb_projects"), orderBy("order", "asc"));
         onSnapshot(
             qProj,
-            async (snapshot) => {
-                if (snapshot.empty) {
-                    if (isAuthorized(currentUser)) {
-                        for (const item of projectsData) {
-                            try {
-                                await setDoc(doc(db, "portweb_projects", item.id), item);
-                            } catch (e) {
-                                console.warn(e);
-                            }
-                        }
-                    }
-                } else {
-                    projectsData = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-                    saveLocalData();
-                    renderProjects();
-                }
+            (snapshot) => {
+                projectsData = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+                renderProjects();
             },
             (err) => console.warn("Firestore projects sync waiting for DB/Rules:", err.message)
         );
 
-        // ซิงค์ข้อมูลบทความ + About Me + Home Card แบบเรียลไทม์
+        // ซิงค์ข้อมูลบทความ + About Me + Home Card แบบเรียลไทม์จาก Firebase 100%
         const qPosts = query(collection(db, "portweb_posts"), orderBy("order", "desc"));
         onSnapshot(
             qPosts,
             async (snapshot) => {
-                if (snapshot.empty) {
-                    latestPostDocs = [];
-                    await syncMissingConfigDocsIfAdmin();
-                } else {
-                    const allDocs = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-                    latestPostDocs = allDocs;
-                    const foundAbout = allDocs.find((d) => d.id === "__about_me__");
-                    if (foundAbout) {
-                        aboutData = { ...DEFAULT_ABOUT, ...foundAbout };
-                    }
-                    const foundHome = allDocs.find((d) => d.id === "__home_data__");
-                    if (foundHome) {
-                        homeData = { ...DEFAULT_HOME, ...foundHome };
-                    }
-                    const cloudPosts = allDocs.filter((d) => d.id !== "__about_me__" && d.id !== "__home_data__");
-                    if (cloudPosts.length > 0) {
-                        postsData = cloudPosts;
-                    }
-                    saveLocalData();
-                    renderPostsList();
-                    renderSinglePostView();
-                    renderAboutMe();
-                    renderHomeAndCard();
-                    await syncMissingConfigDocsIfAdmin();
-                }
+                const allDocs = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+                latestPostDocs = allDocs;
+
+                const foundAbout = allDocs.find((d) => d.id === "config_about_me");
+                aboutData = foundAbout
+                    ? { ...DEFAULT_ABOUT, ...foundAbout, id: "config_about_me" }
+                    : structuredClone(DEFAULT_ABOUT);
+
+                const foundHome = allDocs.find((d) => d.id === "config_home_data");
+                homeData = foundHome
+                    ? { ...DEFAULT_HOME, ...foundHome, id: "config_home_data" }
+                    : rescuedLocalHome
+                      ? { ...DEFAULT_HOME, ...rescuedLocalHome, id: "config_home_data" }
+                      : structuredClone(DEFAULT_HOME);
+
+                postsData = allDocs.filter((d) => !isConfigDocId(d.id));
+
+                renderPostsList();
+                renderSinglePostView();
+                renderAboutMe();
+                renderHomeAndCard();
+                await syncMissingConfigDocsIfAdmin();
             },
             (err) => console.warn("Firestore posts sync waiting for DB/Rules:", err.message)
         );

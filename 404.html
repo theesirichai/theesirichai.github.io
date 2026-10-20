@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="404 - ไม่พบหน้าที่ต้องการ | theesirichai">
+    <title>404 // Page Not Found | theesirichai</title>
+    
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta property="og:site_name" content="theesirichai">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="404 // Page Not Found | theesirichai">
+    <meta property="og:description" content="ไม่พบหน้าที่คุณกำลังค้นหา | theesirichai">
+    <meta property="og:url" content="https://theesirichai.github.io/404.html">
+    <meta property="og:image" content="https://theesirichai.github.io/favicon.svg">
+    <meta name="twitter:card" content="summary">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600&family=Inter:wght@300;400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=6">
+</head>
+<body>
+
+    <aside class="left-sidebar">
+        <img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%20fill%3D%22none%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%231e1f23%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%2278%22%20r%3D%2234%22%20fill%3D%22%23383a3e%22%2F%3E%3Cpath%20d%3D%22M40%20176c0-33.137%2026.863-60%2060-60s60%2026.863%2060%2060%22%20fill%3D%22%23383a3e%22%2F%3E%3C%2Fsvg%3E" alt="Profile Image" class="profile-img">
+        
+        <h1 class="profile-name">THEE D.</h1>
+        <p class="profile-bio">Developer & Creator | TU-8505-CS</p>
+        
+        <div class="social-links"></div>
+    </aside>
+
+    <main class="right-content">
+        
+        <div class="top-nav-row">
+            <nav class="nav-menu">
+                <a href="index.html">Home</a>
+                <a href="posts.html">Posts</a>
+                <a href="about.html">About Me</a>
+                <a href="project.html">Project</a>
+            </nav>
+
+            <div class="admin-bar">
+                <span id="admin-status"></span>
+                <button type="button" id="btn-open-login" class="btn-minimal" title="Admin Login">
+                    <i class="fa-solid fa-lock"></i> Admin
+                </button>
+                <button type="button" id="btn-logout" class="btn-minimal" style="display: none;">
+                    <i class="fa-solid fa-right-from-bracket"></i> ออก
+                </button>
+            </div>
+        </div>
+
+        <section class="home-intro" style="padding-top: 20px;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 4px 12px; border-radius: 4px; color: #ef4444; font-family: monospace; font-size: 0.8rem; margin-bottom: 20px;">
+                <span style="width: 8px; height: 8px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
+                ERROR 404 // NOT FOUND
+            </div>
+
+            <h2 class="year-title" style="font-size: 2.2rem; margin-bottom: 16px;">PAGE NOT FOUND</h2>
+            
+            <p style="color: #92969c; line-height: 1.8; max-width: 540px; margin-bottom: 32px;">
+                หน้าที่คุณพยายามเข้าถึงอาจถูกย้าย ถูกลบไปแล้ว หรือคุณอาจพิมพ์ URL ไม่ถูกต้อง
+            </p>
+
+            <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+                <a href="index.html" class="btn-minimal primary" style="padding: 10px 18px; font-size: 0.9rem;">
+                    <i class="fa-solid fa-house"></i> กลับสู่หน้าแรก (Home)
+                </a>
+                <a href="posts.html" class="btn-minimal" style="padding: 10px 18px; font-size: 0.9rem;">
+                    <i class="fa-solid fa-newspaper"></i> ดูบทความทั้งหมด (Posts)
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal สำหรับล็อกอิน -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">Admin Login</h3>
+                <button type="button" id="btn-close-login" class="modal-close">&times;</button>
+            </div>
+
+            <p id="login-error" class="form-error"></p>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" class="form-input" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-minimal primary" style="width: 100%; justify-content: center; padding: 9px;">
+                    เข้าสู่ระบบด้วย Email
+                </button>
+            </form>
+
+            <div class="modal-divider">— หรือ —</div>
+
+            <button type="button" id="btn-google-login" class="btn-minimal" style="width: 100%; justify-content: center; padding: 9px;">
+                <i class="fa-brands fa-google"></i> เข้าสู่ระบบด้วย Google
+            </button>
+        </div>
+    </div>
+
+    <script type="module" src="firebase-projects.js?v=8"></script>
+</body>
+</html>
