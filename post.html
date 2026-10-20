@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600&family=Inter:wght@300;400;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-    <link rel="stylesheet" href="style.css?v=9">
+    <link rel="stylesheet" href="style.css?v=14">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -53,8 +53,16 @@
         </div>
 
         <div class="back-link-wrap">
-            <a href="posts.html" class="back-link">← Back to Posts</a>
-            <div id="single-post-admin-actions" class="admin-card-actions"></div>
+            <div class="back-link-left">
+                <a href="posts.html" class="back-link">← Back to Posts</a>
+                <span class="reading-time-badge" id="reading-time-display"><i class="fa-regular fa-clock"></i> 1 min read</span>
+            </div>
+            <div class="back-link-right">
+                <button type="button" id="btn-share-post" class="btn-minimal" title="แชร์หรือคัดลอกลิงก์บทความ">
+                    <i class="fa-solid fa-share-nodes"></i> Share
+                </button>
+                <div id="single-post-admin-actions" class="admin-card-actions"></div>
+            </div>
         </div>
 
         <article id="single-post-article" class="home-intro">
@@ -144,6 +152,6 @@
         </div>
     </div>
 
-    <script type="module" src="firebase-projects.js?v=11"></script>
+    <script type="module" src="firebase-projects.js?v=14"></script>
 </body>
 </html>

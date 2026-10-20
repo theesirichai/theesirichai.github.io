@@ -108,6 +108,7 @@ let projectSearchQuery = "";
 let projectStatusFilter = "all";
 let projectTagFilter = "all";
 let postsSearchQuery = "";
+let messagesData = [];
 
 function isAuthorized(user) {
     if (!user) return false;
@@ -330,6 +331,81 @@ function renderSinglePostView() {
         <div class="post-body">${bodyHtml}</div>
     `;
 
+    // 1. Calculate & Display Reading Time
+    const rawContent = post.content || "";
+    const estMinutes = Math.max(1, Math.ceil(rawContent.length / 500));
+    const readingTimeEl = document.getElementById("reading-time-display");
+    if (readingTimeEl) {
+        readingTimeEl.innerHTML = `<i class="fa-regular fa-clock"></i> ${estMinutes} min read`;
+    }
+
+    // 2. Share Button Event
+    const shareBtn = document.getElementById("btn-share-post");
+    if (shareBtn && !shareBtn.dataset.bound) {
+        shareBtn.dataset.bound = "true";
+        shareBtn.addEventListener("click", async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: post.title,
+                        url: window.location.href
+                    });
+                    return;
+                } catch (e) {}
+            }
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                const prevHtml = shareBtn.innerHTML;
+                shareBtn.innerHTML = `<i class="fa-solid fa-check"></i> Link Copied!`;
+                shareBtn.classList.add("primary");
+                setTimeout(() => {
+                    shareBtn.innerHTML = prevHtml;
+                }, 2000);
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    }
+
+    // 3. Dynamic Table of Contents (TOC)
+    const postBodyEl = articleContainer.querySelector(".post-body");
+    if (postBodyEl) {
+        const headings = postBodyEl.querySelectorAll("h2, h3");
+        if (headings.length >= 2) {
+            headings.forEach((h, idx) => {
+                if (!h.id) {
+                    h.id = "sec-" + (idx + 1) + "-" + h.textContent.trim().toLowerCase().replace(/[^a-z0-9ก-๙]+/g, "-");
+                }
+            });
+
+            const tocCard = document.createElement("div");
+            tocCard.className = "post-toc-card";
+            tocCard.innerHTML = `
+                <div class="post-toc-header">
+                    <i class="fa-solid fa-list-ul"></i> Table of Contents
+                </div>
+                <nav class="post-toc-links">
+                    ${Array.from(headings).map((h) => `
+                        <a href="#${h.id}" class="toc-link ${h.tagName.toLowerCase()}">${escapeHtml(h.textContent)}</a>
+                    `).join("")}
+                </nav>
+            `;
+            postBodyEl.insertBefore(tocCard, postBodyEl.firstChild);
+
+            tocCard.querySelectorAll(".toc-link").forEach((link) => {
+                link.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute("href").slice(1);
+                    const targetEl = document.getElementById(targetId);
+                    if (targetEl) {
+                        targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+                        history.pushState(null, "", `#${targetId}`);
+                    }
+                });
+            });
+        }
+    }
+
     // ทำ Syntax Highlighting สำหรับ Code Blocks
     if (typeof window.hljs !== "undefined") {
         articleContainer.querySelectorAll("pre code").forEach((block) => {
@@ -376,6 +452,12 @@ function renderProjects() {
         if (countBadge) countBadge.textContent = "0 projects";
         return;
     }
+
+    // Sync status filter pills active state
+    document.querySelectorAll("#status-filter-pills .filter-pill").forEach((btn) => {
+        const filterVal = btn.getAttribute("data-filter") || "all";
+        btn.classList.toggle("active", filterVal === projectStatusFilter);
+    });
 
     // 1. Dynamic Tags Setup
     const tagFilterWrap = document.getElementById("tag-filter-wrap");
@@ -1579,6 +1661,293 @@ function renderProjectImagePreview() {
     });
 }
 
+
+
+// ============================================================================
+// 7.1 GITHUB LIVE STATS & TOP REPOSITORIES
+// ============================================================================
+async function loadGitHubData() {
+    const reposContainer = document.getElementById("github-repos-container");
+    const statReposEl = document.getElementById("gh-stat-repos");
+    const statStarsEl = document.getElementById("gh-stat-stars");
+    if (!reposContainer) return;
+
+    const cacheKey = "portweb_gh_cache_v3";
+    const cached = sessionStorage.getItem(cacheKey);
+    let data = null;
+
+    if (cached) {
+        try {
+            const parsed = JSON.parse(cached);
+            if (Date.now() - parsed.timestamp < 15 * 60 * 1000) {
+                data = parsed;
+            }
+        } catch (e) {}
+    }
+
+    if (!data) {
+        try {
+            const [userRes, reposRes] = await Promise.all([
+                fetch("https://api.github.com/users/theesirichai"),
+                fetch("https://api.github.com/users/theesirichai/repos?sort=updated&per_page=6")
+            ]);
+            if (userRes.ok && reposRes.ok) {
+                const user = await userRes.json();
+                const repos = await reposRes.json();
+                const totalStars = repos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
+                data = {
+                    user,
+                    repos,
+                    totalStars,
+                    timestamp: Date.now()
+                };
+                sessionStorage.setItem(cacheKey, JSON.stringify(data));
+            }
+        } catch (err) {
+            console.warn("GitHub API fetch error:", err);
+        }
+    }
+
+    if (!data) {
+        reposContainer.innerHTML = `<p style="color: #61656c; font-size: 0.88rem;">สามารถดูโปรเจกต์โอเพนซอร์สทั้งหมดได้ที่ <a href="https://github.com/theesirichai" target="_blank" rel="noopener" style="color: #22c55e;">GitHub @theesirichai ↗</a></p>`;
+        return;
+    }
+
+    if (statReposEl) statReposEl.textContent = data.user.public_repos ?? data.repos.length;
+    if (statStarsEl) statStarsEl.textContent = data.totalStars;
+
+    const LANG_COLORS = {
+        TypeScript: "#3178c6",
+        JavaScript: "#f7df1e",
+        HTML: "#e34c26",
+        CSS: "#563d7c",
+        Python: "#3572a5",
+        Shell: "#89e051",
+        Rust: "#dea584",
+        Go: "#00add8",
+        C: "#555555",
+        "C++": "#f34b7d"
+    };
+
+    reposContainer.innerHTML = data.repos
+        .slice(0, 6)
+        .map((r) => {
+            const lang = r.language || "Other";
+            const langColor = LANG_COLORS[lang] || "#888888";
+            const desc = r.description ? escapeHtml(r.description) : "No description provided.";
+            const stars = r.stargazers_count || 0;
+            const forks = r.forks_count || 0;
+
+            return `
+            <a href="${escapeHtml(r.html_url)}" target="_blank" rel="noopener" class="github-repo-card">
+                <div class="github-repo-title">
+                    <span><i class="fa-regular fa-folder" style="color: #22c55e; margin-right: 6px;"></i>${escapeHtml(r.name)}</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </div>
+                <p class="github-repo-desc">${desc}</p>
+                <div class="github-repo-meta">
+                    <span class="gh-lang-pill">
+                        <span class="gh-lang-dot" style="background-color: ${langColor};"></span>
+                        ${escapeHtml(lang)}
+                    </span>
+                    <div class="gh-counts">
+                        ${stars > 0 ? `<span><i class="fa-regular fa-star"></i> ${stars}</span>` : ""}
+                        ${forks > 0 ? `<span><i class="fa-solid fa-code-fork"></i> ${forks}</span>` : ""}
+                    </div>
+                </div>
+            </a>
+            `;
+        })
+        .join("");
+}
+
+// ============================================================================
+// 7.2 QUICK CONTACT BOX & ADMIN MESSAGES INBOX
+// ============================================================================
+function setupContactAndInbox() {
+    const contactForm = document.getElementById("contact-form");
+    const statusMsg = document.getElementById("contact-status-msg");
+    const sendBtn = document.getElementById("btn-send-message");
+
+    if (contactForm) {
+        contactForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const name = document.getElementById("contact-name").value.trim();
+            const email = document.getElementById("contact-email").value.trim();
+            const message = document.getElementById("contact-message").value.trim();
+
+            if (!name || !email || !message) return;
+
+            if (sendBtn) {
+                sendBtn.disabled = true;
+                sendBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> กำลังส่ง...`;
+            }
+
+            try {
+                if (isFirebaseConfigured && db) {
+                    const msgDoc = {
+                        name,
+                        email,
+                        message,
+                        createdAt: new Date().toLocaleString("th-TH"),
+                        timestamp: Date.now(),
+                        isRead: false
+                    };
+                    await setDoc(doc(collection(db, "portweb_messages")), msgDoc);
+                } else {
+                    const localMsgs = JSON.parse(localStorage.getItem("portweb_demo_messages") || "[]");
+                    localMsgs.unshift({
+                        id: "demo-" + Date.now(),
+                        name,
+                        email,
+                        message,
+                        createdAt: new Date().toLocaleString("th-TH"),
+                        timestamp: Date.now()
+                    });
+                    localStorage.setItem("portweb_demo_messages", JSON.stringify(localMsgs));
+                }
+
+                if (statusMsg) {
+                    statusMsg.className = "contact-status-msg success";
+                    statusMsg.textContent = "ขอบคุณครับ! ได้รับข้อความเรียบร้อยแล้วและจะตอบกลับโดยเร็วที่สุด ✓";
+                }
+                contactForm.reset();
+                setTimeout(() => {
+                    if (statusMsg) statusMsg.textContent = "";
+                }, 5000);
+            } catch (err) {
+                console.error(err);
+                if (statusMsg) {
+                    statusMsg.className = "contact-status-msg error";
+                    statusMsg.textContent = "เกิดข้อผิดพลาดในการส่ง: " + err.message;
+                }
+            } finally {
+                if (sendBtn) {
+                    sendBtn.disabled = false;
+                    sendBtn.innerHTML = `<i class="fa-regular fa-paper-plane"></i> ส่งข้อความ (Send Message)`;
+                }
+            }
+        });
+    }
+
+    // Inbox Modal Events
+    const inboxModal = document.getElementById("inbox-modal");
+    const openInboxBtn = document.getElementById("btn-open-inbox");
+    const closeInboxBtn = document.getElementById("btn-close-inbox");
+
+    openInboxBtn?.addEventListener("click", () => {
+        renderInboxMessages();
+        inboxModal?.classList.add("open");
+    });
+
+    closeInboxBtn?.addEventListener("click", () => {
+        inboxModal?.classList.remove("open");
+    });
+}
+
+function renderInboxMessages() {
+    const container = document.getElementById("inbox-messages-container");
+    if (!container) return;
+
+    if (messagesData.length === 0) {
+        container.innerHTML = `<p style="color: #61656c; text-align: center; padding: 24px;">ยังไม่มีข้อความส่งเข้ามา</p>`;
+        return;
+    }
+
+    container.innerHTML = messagesData
+        .map(
+            (m) => `
+        <div class="inbox-item-card" data-id="${escapeHtml(m.id)}">
+            <div class="inbox-item-header">
+                <div>
+                    <span class="inbox-sender-name">${escapeHtml(m.name)}</span>
+                    <a href="mailto:${escapeHtml(m.email)}" class="inbox-sender-email"><i class="fa-regular fa-envelope"></i> ${escapeHtml(m.email)}</a>
+                </div>
+                <span class="inbox-date">${escapeHtml(m.createdAt || "")}</span>
+            </div>
+            <div class="inbox-msg-content">${escapeHtml(m.message)}</div>
+            <div class="inbox-actions-row">
+                <button type="button" class="btn-minimal danger btn-delete-msg" data-id="${escapeHtml(m.id)}">
+                    <i class="fa-solid fa-trash"></i> ลบข้อความ
+                </button>
+            </div>
+        </div>
+    `
+        )
+        .join("");
+
+    container.querySelectorAll(".btn-delete-msg").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+            const id = btn.getAttribute("data-id");
+            if (confirm("ต้องการลบข้อความนี้ใช่หรือไม่?")) {
+                if (isFirebaseConfigured && db) {
+                    await deleteDoc(doc(db, "portweb_messages", id));
+                } else {
+                    messagesData = messagesData.filter((x) => x.id !== id);
+                    localStorage.setItem("portweb_demo_messages", JSON.stringify(messagesData));
+                    renderInboxMessages();
+                }
+            }
+        });
+    });
+}
+
+function setupProjectFilterControls() {
+    const searchInput = document.getElementById("project-search-input");
+    const clearSearchBtn = document.getElementById("btn-clear-search");
+
+    if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+            projectSearchQuery = e.target.value;
+            if (clearSearchBtn) clearSearchBtn.style.display = projectSearchQuery ? "block" : "none";
+            renderProjects();
+        });
+    }
+
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener("click", () => {
+            projectSearchQuery = "";
+            if (searchInput) searchInput.value = "";
+            clearSearchBtn.style.display = "none";
+            renderProjects();
+        });
+    }
+
+    const statusPills = document.querySelectorAll("#status-filter-pills .filter-pill");
+    statusPills.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const filterVal = btn.getAttribute("data-filter") || "all";
+            projectStatusFilter = filterVal;
+            statusPills.forEach((p) => {
+                p.classList.toggle("active", (p.getAttribute("data-filter") || "all") === filterVal);
+            });
+            renderProjects();
+        });
+    });
+}
+
+function setupPostsSearchControls() {
+    const postsSearchInput = document.getElementById("posts-search-input");
+    const clearPostsSearchBtn = document.getElementById("btn-clear-posts-search");
+
+    if (postsSearchInput) {
+        postsSearchInput.addEventListener("input", (e) => {
+            postsSearchQuery = e.target.value;
+            if (clearPostsSearchBtn) clearPostsSearchBtn.style.display = postsSearchQuery ? "block" : "none";
+            renderPostsList();
+        });
+    }
+
+    if (clearPostsSearchBtn) {
+        clearPostsSearchBtn.addEventListener("click", () => {
+            postsSearchQuery = "";
+            if (postsSearchInput) postsSearchInput.value = "";
+            clearPostsSearchBtn.style.display = "none";
+            renderPostsList();
+        });
+    }
+}
+
 function setupModalEvents() {
     const loginModal = document.getElementById("login-modal");
     const loginBtn = document.getElementById("btn-open-login");
@@ -1939,6 +2308,8 @@ function init() {
         }
     }
 
+    loadGitHubData();
+    setupContactAndInbox();
     setupModalEvents();
 }
 

@@ -17,7 +17,7 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600&family=Inter:wght@300;400;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=9">
+    <link rel="stylesheet" href="style.css?v=14">
 </head>
 <body>
 
@@ -48,6 +48,7 @@
                 <button type="button" id="btn-open-login" class="btn-minimal" title="สำหรับเจ้าของเว็บเพื่อแก้ไขหน้า Home & การ์ดโปรไฟล์">
                     <i class="fa-solid fa-lock"></i> Admin
                 </button>
+                <button type="button" id="btn-open-inbox" class="btn-minimal" style="display: none;" title="ข้อความติดต่อ"><i class="fa-solid fa-inbox"></i> Inbox <span id="inbox-count-badge" class="badge-count" style="display: none;">0</span></button>
                 <button type="button" id="btn-logout" class="btn-minimal" style="display: none;">
                     <i class="fa-solid fa-right-from-bracket"></i> ออก
                 </button>
@@ -130,6 +131,65 @@
                 <a href="posts.html" class="inline-cta">ดูบันทึกทั้งหมด →</a>
                 <a href="project.html" class="inline-cta">ดูความคืบหน้าโปรเจกต์ →</a>
             </p>
+            <!-- GitHub Live Stats & Top Repositories -->
+            <div class="github-stats-section" id="github-section">
+                <div class="section-header-row">
+                    <h3 class="section-subtitle" style="margin-bottom: 0;">
+                        <i class="fa-brands fa-github"></i> GitHub Live Stats &amp; Repos
+                    </h3>
+                    <a href="https://github.com/theesirichai" target="_blank" rel="noopener" class="github-profile-link">
+                        @theesirichai <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.72rem;"></i>
+                    </a>
+                </div>
+
+                <div class="github-summary-cards" id="github-summary-container">
+                    <div class="github-stat-pill">
+                        <span class="gh-stat-label">PUBLIC REPOS</span>
+                        <span class="gh-stat-val" id="gh-stat-repos">...</span>
+                    </div>
+                    <div class="github-stat-pill">
+                        <span class="gh-stat-label">TOTAL STARS</span>
+                        <span class="gh-stat-val" id="gh-stat-stars">...</span>
+                    </div>
+                    <div class="github-stat-pill">
+                        <span class="gh-stat-label">STATUS</span>
+                        <span class="gh-stat-val accent">ACTIVE DEV</span>
+                    </div>
+                </div>
+
+                <div class="github-repos-grid" id="github-repos-container">
+                    <p style="color: #61656c; font-size: 0.88rem;">กำลังโหลดข้อมูลจาก GitHub API...</p>
+                </div>
+            </div>
+
+            <!-- Quick Contact Section -->
+            <div class="quick-contact-section" id="contact-section">
+                <h3 class="section-subtitle"><i class="fa-regular fa-paper-plane"></i> Quick Contact</h3>
+                <p class="contact-desc">สนใจร่วมงาน, เสนอโปรเจกต์, พูดคุย หรืออยากทักทาย สามารถส่งข้อความหาผมได้โดยตรงครับ</p>
+                
+                <form id="contact-form" class="contact-form-box">
+                    <div class="contact-row">
+                        <div class="form-group flex-1">
+                            <label for="contact-name">ชื่อของคุณ</label>
+                            <input type="text" id="contact-name" class="form-input" placeholder="Your Name / Company" required>
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="contact-email">อีเมลติดต่อกลับ</label>
+                            <input type="email" id="contact-email" class="form-input" placeholder="name@example.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-message">ข้อความ</label>
+                        <textarea id="contact-message" class="form-input" rows="3" placeholder="สวัสดีครับคุณธีร์ สนใจให้ช่วยพัฒนา..." required></textarea>
+                    </div>
+                    <div class="contact-action-row">
+                        <button type="submit" id="btn-send-message" class="btn-minimal primary">
+                            <i class="fa-regular fa-paper-plane"></i> ส่งข้อความ (Send Message)
+                        </button>
+                        <span id="contact-status-msg" class="contact-status-msg"></span>
+                    </div>
+                </form>
+            </div>
         </section>
 
     </main>
@@ -291,6 +351,19 @@
         </div>
     </div>
 
-    <script type="module" src="firebase-projects.js?v=11"></script>
+    <!-- Modal กล่องข้อความ Inbox (Admin Only) -->
+    <div id="inbox-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 680px;">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-inbox"></i> Messages Inbox</h3>
+                <button type="button" id="btn-close-inbox" class="modal-close">&times;</button>
+            </div>
+            <div id="inbox-messages-container" class="inbox-messages-list">
+                <p style="color: #61656c;">กำลังโหลดข้อความ...</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="firebase-projects.js?v=14"></script>
 </body>
 </html>
