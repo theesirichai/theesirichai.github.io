@@ -17,7 +17,7 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600&family=Inter:wght@300;400;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=6">
+    <link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
 
@@ -56,6 +56,18 @@
 
         <div id="config-notice" class="notice-banner" style="display: none;">
             💡 <strong>โหมดทดลองใช้งาน:</strong> กดปุ่ม <code>Admin</code> มุมขวาบนเพื่อทดลองเขียนบทความใหม่ แก้ไขบทความเดิม และแนบรูปภาพได้ทันที เมื่อใส่ค่า Firebase ใน <code>firebase-projects.js</code> แล้ว ข้อมูลจะซิงค์ขึ้น Cloud อัตโนมัติครับ
+        </div>
+
+        <!-- Posts Search Bar -->
+        <div class="posts-search-wrap">
+            <div class="project-search-bar">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="posts-search-input" class="search-input" placeholder="Search posts by title or keyword...">
+                <button type="button" id="btn-clear-posts-search" class="search-clear-btn" style="display: none;" title="ล้างการค้นหา">&times;</button>
+            </div>
+            <div class="project-results-meta">
+                <span id="posts-count-badge" class="results-count"></span>
+            </div>
         </div>
 
         <section id="posts-container">
@@ -146,6 +158,6 @@
         </div>
     </div>
 
-    <script type="module" src="firebase-projects.js?v=8"></script>
+    <script type="module" src="firebase-projects.js?v=11"></script>
 </body>
 </html>

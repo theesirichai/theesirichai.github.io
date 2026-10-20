@@ -103,6 +103,12 @@ let tempProjImage = "";
 let tempAboutImages = [];
 let tempCardPhoto = "";
 
+// Search & Filter State
+let projectSearchQuery = "";
+let projectStatusFilter = "all";
+let projectTagFilter = "all";
+let postsSearchQuery = "";
+
 function isAuthorized(user) {
     if (!user) return false;
     if (ALLOWED_ADMIN_EMAILS.length === 0) return true;
@@ -366,34 +372,154 @@ function renderProjects() {
 
     if (projectsData.length === 0) {
         projectListEl.innerHTML = `<p style="color: #61656c;">ยังไม่มีโปรเจกต์ในระบบ</p>`;
+        const countBadge = document.getElementById("project-count-badge");
+        if (countBadge) countBadge.textContent = "0 projects";
+        return;
+    }
+
+    // 1. Dynamic Tags Setup
+    const tagFilterWrap = document.getElementById("tag-filter-wrap");
+    const tagPillsEl = document.getElementById("tag-filter-pills");
+    const uniqueTags = new Set();
+    projectsData.forEach((p) => {
+        if (p.tag) {
+            p.tag.split(/[,/|]/).map((t) => t.trim()).filter(Boolean).forEach((t) => uniqueTags.add(t));
+        }
+    });
+
+    if (tagFilterWrap && tagPillsEl) {
+        if (uniqueTags.size > 0) {
+            tagFilterWrap.style.display = "flex";
+            const tagsArr = Array.from(uniqueTags).sort();
+            tagPillsEl.innerHTML = `
+                <button type="button" class="filter-pill ${projectTagFilter === "all" ? "active" : ""}" data-tag="all">All</button>
+                ${tagsArr.map((t) => `<button type="button" class="filter-pill ${projectTagFilter.toLowerCase() === t.toLowerCase() ? "active" : ""}" data-tag="${escapeHtml(t)}">#${escapeHtml(t)}</button>`).join("")}
+            `;
+            tagPillsEl.querySelectorAll(".filter-pill").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    projectTagFilter = btn.getAttribute("data-tag") || "all";
+                    renderProjects();
+                });
+            });
+        } else {
+            tagFilterWrap.style.display = "none";
+        }
+    }
+
+    // 2. Filter & Search Logic
+    const q = projectSearchQuery.toLowerCase().trim();
+    const sorted = [...projectsData].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+    const filtered = sorted.filter((proj) => {
+        const pct = Math.max(0, Math.min(100, Number(proj.progress) || 0));
+        if (projectStatusFilter === "completed" && pct !== 100) return false;
+        if (projectStatusFilter === "in-progress" && (pct === 100 || pct === 0)) return false;
+
+        if (projectTagFilter !== "all") {
+            const tags = (proj.tag || "").toLowerCase().split(/[,/|]/).map((t) => t.trim());
+            if (!tags.includes(projectTagFilter.toLowerCase())) return false;
+        }
+
+        if (q) {
+            const matchTitle = (proj.title || "").toLowerCase().includes(q);
+            const matchDesc = (proj.description || "").toLowerCase().includes(q);
+            const matchTag = (proj.tag || "").toLowerCase().includes(q);
+            if (!matchTitle && !matchDesc && !matchTag) return false;
+        }
+
+        return true;
+    });
+
+    // 3. Count Badge
+    const countBadge = document.getElementById("project-count-badge");
+    if (countBadge) {
+        countBadge.textContent = `Showing ${filtered.length} of ${projectsData.length} projects`;
+    }
+
+    // 4. Empty State
+    if (filtered.length === 0) {
+        projectListEl.innerHTML = `
+            <div class="empty-filter-state">
+                <p>ไม่พบโปรเจกต์ที่ตรงกับเงื่อนไขการค้นหาหรือตัวกรอง</p>
+                <button type="button" id="btn-reset-proj-filter" class="btn-minimal">
+                    <i class="fa-solid fa-rotate-left"></i> ล้างตัวกรองทั้งหมด
+                </button>
+            </div>
+        `;
+        document.getElementById("btn-reset-proj-filter")?.addEventListener("click", () => {
+            projectSearchQuery = "";
+            projectStatusFilter = "all";
+            projectTagFilter = "all";
+            const sInput = document.getElementById("project-search-input");
+            if (sInput) sInput.value = "";
+            const clearBtn = document.getElementById("btn-clear-search");
+            if (clearBtn) clearBtn.style.display = "none";
+            document.querySelectorAll("#status-filter-pills .filter-pill").forEach((p) => {
+                p.classList.toggle("active", p.getAttribute("data-filter") === "all");
+            });
+            renderProjects();
+        });
         return;
     }
 
     const canEdit = isAuthorized(currentUser);
 
-    projectListEl.innerHTML = [...projectsData]
-        .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
+    // 5. Render Project Cards
+    projectListEl.innerHTML = filtered
         .map((proj) => {
             const pct = Math.max(0, Math.min(100, Number(proj.progress) || 0));
             const isDone = pct === 100;
+            const statusClass = isDone ? "completed" : pct > 0 ? "in-progress" : "planned";
             const statusText = isDone ? "Completed" : pct > 0 ? "In Progress" : "Planned";
-            const titleHtml = proj.link
-                ? `<a href="${escapeHtml(proj.link)}" target="_blank" rel="noopener" class="project-title">${escapeHtml(proj.title)} ↗</a>`
-                : `<span class="project-title">${escapeHtml(proj.title)}</span>`;
+
+            // Tag chips
+            const tagsList = (proj.tag || "")
+                .split(/[,/|]/)
+                .map((t) => t.trim())
+                .filter(Boolean);
+            const tagChipsHtml = tagsList
+                .map((t) => `<button type="button" class="project-tag-chip ${projectTagFilter.toLowerCase() === t.toLowerCase() ? "active" : ""}" data-tag="${escapeHtml(t)}">#${escapeHtml(t)}</button>`)
+                .join("");
+
+            // Links (Demo & GitHub)
+            let demoUrl = "";
+            let ghUrl = proj.github || "";
+
+            if (proj.link) {
+                if (proj.link.includes("github.com") && !ghUrl) {
+                    ghUrl = proj.link;
+                } else {
+                    demoUrl = proj.link;
+                }
+            }
+
+            let linksHtml = "";
+            if (demoUrl || ghUrl) {
+                linksHtml = `
+                    <div class="project-links-row">
+                        ${demoUrl ? `<a href="${escapeHtml(demoUrl)}" target="_blank" rel="noopener" class="project-action-btn demo-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</a>` : ""}
+                        ${ghUrl ? `<a href="${escapeHtml(ghUrl)}" target="_blank" rel="noopener" class="project-action-btn github-btn"><i class="fa-brands fa-github"></i> Source Code</a>` : ""}
+                    </div>
+                `;
+            }
 
             return `
             <div class="project-card" data-id="${escapeHtml(proj.id)}">
                 <div class="project-top">
                     <div class="project-title-wrap">
-                        ${titleHtml}
-                        ${proj.tag ? `<span class="project-tag">${escapeHtml(proj.tag)}</span>` : ""}
+                        <span class="project-title">${escapeHtml(proj.title)}</span>
+                        ${tagChipsHtml ? `<div class="project-tags-wrap">${tagChipsHtml}</div>` : ""}
                     </div>
-                    <span class="status-badge">${statusText}</span>
+                    <span class="status-badge ${statusClass}">
+                        <i class="fa-solid ${isDone ? "fa-circle-check" : pct > 0 ? "fa-spinner" : "fa-clock"}"></i>
+                        ${statusText}
+                    </span>
                 </div>
 
                 <p class="project-desc">${escapeHtml(proj.description)}</p>
 
                 ${proj.image ? `<img src="${proj.image}" alt="${escapeHtml(proj.title)}" class="project-thumb" loading="lazy">` : ""}
+
+                ${linksHtml}
 
                 <div class="progress-container">
                     <div class="progress-track">
@@ -443,6 +569,19 @@ function renderProjects() {
             `;
         })
         .join("");
+
+    // Click on tag chip on project card filters by that tag
+    projectListEl.querySelectorAll(".project-tag-chip").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const tag = btn.getAttribute("data-tag");
+            if (projectTagFilter.toLowerCase() === tag.toLowerCase()) {
+                projectTagFilter = "all";
+            } else {
+                projectTagFilter = tag;
+            }
+            renderProjects();
+        });
+    });
 
     if (canEdit) {
         attachAdminProjectListeners();
@@ -608,6 +747,82 @@ function renderBulletLines(text) {
         .join("");
 }
 
+function renderSkillsMatrix(text) {
+    if (!text) return "";
+    const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+    const hasColon = lines.some((l) => l.includes(":"));
+    if (!hasColon) {
+        return renderBulletLines(text);
+    }
+
+    const getCatIcon = (cat) => {
+        const c = cat.toLowerCase();
+        if (c.includes("front") || c.includes("ui") || c.includes("web")) return "fa-solid fa-code";
+        if (c.includes("back") || c.includes("cloud") || c.includes("api") || c.includes("server")) return "fa-solid fa-server";
+        if (c.includes("infra") || c.includes("devops") || c.includes("docker") || c.includes("linux")) return "fa-solid fa-terminal";
+        if (c.includes("system") || c.includes("tool") || c.includes("arch")) return "fa-solid fa-gears";
+        if (c.includes("data") || c.includes("db") || c.includes("sql")) return "fa-solid fa-database";
+        if (c.includes("ai") || c.includes("ml")) return "fa-solid fa-brain";
+        return "fa-solid fa-layer-group";
+    };
+
+    const getTechIcon = (tech) => {
+        const t = tech.toLowerCase();
+        if (t.includes("html")) return "fa-brands fa-html5";
+        if (t.includes("css")) return "fa-brands fa-css3-alt";
+        if (t.includes("javascript") || t.includes("js")) return "fa-brands fa-js";
+        if (t.includes("react")) return "fa-brands fa-react";
+        if (t.includes("node")) return "fa-brands fa-node-js";
+        if (t.includes("docker")) return "fa-brands fa-docker";
+        if (t.includes("linux") || t.includes("ubuntu")) return "fa-brands fa-linux";
+        if (t.includes("git")) return "fa-brands fa-git-alt";
+        if (t.includes("python")) return "fa-brands fa-python";
+        return "fa-solid fa-circle-check";
+    };
+
+    return `
+    <div class="skills-grid">
+        ${lines
+            .map((line) => {
+                const idx = line.indexOf(":");
+                if (idx === -1) {
+                    return `
+                    <div class="skill-category-card full-width">
+                        <div class="skill-category-title"><i class="fa-solid fa-angle-right"></i> ${escapeHtml(line)}</div>
+                    </div>`;
+                }
+                const cat = line.slice(0, idx).trim();
+                const items = line
+                    .slice(idx + 1)
+                    .split(",")
+                    .map((i) => i.trim())
+                    .filter(Boolean);
+                const catIcon = getCatIcon(cat);
+
+                return `
+                <div class="skill-category-card">
+                    <div class="skill-category-title">
+                        <i class="${catIcon}"></i>
+                        <span>${escapeHtml(cat)}</span>
+                    </div>
+                    <div class="skill-badges-wrap">
+                        ${items
+                            .map((item) => {
+                                const itemIcon = getTechIcon(item);
+                                return `
+                                <span class="skill-badge">
+                                    <i class="${itemIcon}"></i>
+                                    <span>${escapeHtml(item)}</span>
+                                </span>`;
+                            })
+                            .join("")}
+                    </div>
+                </div>`;
+            })
+            .join("")}
+    </div>`;
+}
+
 function renderAboutMe() {
     const introEl = document.getElementById("about-intro-display");
     const eduEl = document.getElementById("about-edu-display");
@@ -619,7 +834,7 @@ function renderAboutMe() {
 
     introEl.textContent = aboutData.intro || DEFAULT_ABOUT.intro;
     if (eduEl) eduEl.innerHTML = renderBulletLines(aboutData.education);
-    if (techEl) techEl.innerHTML = renderBulletLines(aboutData.techStack);
+    if (techEl) techEl.innerHTML = renderSkillsMatrix(aboutData.techStack);
     if (hobbiesEl) hobbiesEl.innerHTML = renderBulletLines(aboutData.hobbies);
 
     if (galleryEl) {
@@ -1325,12 +1540,16 @@ function openProjectModal(proj) {
         document.getElementById("proj-tag").value = proj.tag || "";
         document.getElementById("proj-desc").value = proj.description || "";
         document.getElementById("proj-link").value = proj.link || "";
+        const ghInput = document.getElementById("proj-github");
+        if (ghInput) ghInput.value = proj.github || "";
         document.getElementById("proj-progress").value = proj.progress ?? 0;
         tempProjImage = proj.image || "";
     } else {
         projectModalTitle.textContent = "เพิ่มโปรเจกต์ใหม่";
         projectForm.reset();
         document.getElementById("proj-id").value = "";
+        const ghInput = document.getElementById("proj-github");
+        if (ghInput) ghInput.value = "";
         document.getElementById("proj-progress").value = 0;
         tempProjImage = "";
     }
@@ -1610,6 +1829,7 @@ function setupModalEvents() {
         const tag = document.getElementById("proj-tag").value.trim();
         const description = document.getElementById("proj-desc").value.trim();
         const link = document.getElementById("proj-link").value.trim();
+        const github = document.getElementById("proj-github")?.value.trim() || "";
         const progress = Math.max(0, Math.min(100, Number(document.getElementById("proj-progress").value) || 0));
 
         const existing = projectsData.find((p) => p.id === idInput);
@@ -1619,6 +1839,7 @@ function setupModalEvents() {
             tag,
             description,
             link,
+            github,
             image: tempProjImage || "",
             progress,
             order: existing ? existing.order : projectsData.length + 1

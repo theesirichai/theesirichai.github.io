@@ -17,7 +17,7 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600&family=Inter:wght@300;400;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=6">
+    <link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
 
@@ -59,6 +59,35 @@
 
             <div id="config-notice" class="notice-banner" style="display: none;">
                 💡 <strong>โหมดทดลองใช้งาน:</strong> ตอนนี้คุณสามารถกดปุ่ม <code>Admin</code> มุมขวาบนเพื่อทดลองล็อกอิน เพิ่มโปรเจกต์ แนบรูป และเลื่อนปรับ <code>%</code> ได้ทันที เมื่อต้องการเชื่อมฐานข้อมูลจริง เพียงนำค่าจาก Firebase Console มาวางในไฟล์ <code>firebase-projects.js</code>
+            </div>
+
+            <!-- Project Search & Filter Controls -->
+            <div class="project-controls-wrap">
+                <div class="project-search-bar">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="project-search-input" class="search-input" placeholder="Search projects by name, description, or tech stack...">
+                    <button type="button" id="btn-clear-search" class="search-clear-btn" style="display: none;" title="ล้างการค้นหา">&times;</button>
+                </div>
+
+                <div class="project-filter-row">
+                    <div class="filter-group">
+                        <span class="filter-label"><i class="fa-solid fa-sliders"></i> Status:</span>
+                        <div class="filter-pills" id="status-filter-pills">
+                            <button type="button" class="filter-pill active" data-filter="all">All</button>
+                            <button type="button" class="filter-pill" data-filter="completed">Completed</button>
+                            <button type="button" class="filter-pill" data-filter="in-progress">In Progress</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-group tag-filter-group" id="tag-filter-wrap" style="display: none;">
+                        <span class="filter-label"><i class="fa-solid fa-tags"></i> Tags:</span>
+                        <div class="filter-pills" id="tag-filter-pills"></div>
+                    </div>
+                </div>
+
+                <div class="project-results-meta">
+                    <span id="project-count-badge" class="results-count"></span>
+                </div>
             </div>
 
             <div id="project-list" class="project-list">
@@ -123,8 +152,12 @@
                     <textarea id="proj-desc" class="form-input" rows="3" placeholder="อธิบายสิ่งที่กำลังทำ..." required></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="proj-link">ลิงก์ GitHub / เว็บไซต์ (ถ้ามี)</label>
-                    <input type="url" id="proj-link" class="form-input" placeholder="https://github.com/...">
+                    <label for="proj-link">ลิงก์ Live Demo / Website (ถ้ามี)</label>
+                    <input type="url" id="proj-link" class="form-input" placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label for="proj-github">ลิงก์ GitHub Repo / Source Code (ถ้ามี)</label>
+                    <input type="url" id="proj-github" class="form-input" placeholder="https://github.com/theesirichai/...">
                 </div>
                 <div class="form-group">
                     <label for="proj-progress">ความคืบหน้าเริ่มต้น (%)</label>
@@ -147,6 +180,6 @@
         </div>
     </div>
 
-    <script type="module" src="firebase-projects.js?v=8"></script>
+    <script type="module" src="firebase-projects.js?v=11"></script>
 </body>
 </html>
