@@ -494,7 +494,7 @@ function renderProjects() {
     const filtered = sorted.filter((proj) => {
         const pct = Math.max(0, Math.min(100, Number(proj.progress) || 0));
         if (projectStatusFilter === "completed" && pct !== 100) return false;
-        if (projectStatusFilter === "in-progress" && (pct === 100 || pct === 0)) return false;
+        if (projectStatusFilter === "in-progress" && pct === 100) return false;
 
         if (projectTagFilter !== "all") {
             const tags = (proj.tag || "").toLowerCase().split(/[,/|]/).map((t) => t.trim());
@@ -2310,6 +2310,8 @@ function init() {
 
     loadGitHubData();
     setupContactAndInbox();
+    setupProjectFilterControls();
+    setupPostsSearchControls();
     setupModalEvents();
 }
 
