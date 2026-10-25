@@ -37,9 +37,132 @@ const ALLOWED_ADMIN_EMAILS = ["thee3938@gmail.com"];
 // ============================================================================
 // 2. โครงสร้างข้อมูลว่างเริ่มต้น (ดึงและบันทึกจาก Firebase Firestore 100% ไม่มีข้อมูล Fixed ทับซ้อน)
 // ============================================================================
-const DEFAULT_PROJECTS = [];
+const OVERDOSE_BANNER_SVG =
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" fill="none">
+            <rect width="960" height="420" rx="16" fill="#282420"/>
+            <rect x="12" y="12" width="936" height="396" rx="12" stroke="#4a423b" stroke-width="2"/>
+            <circle cx="48" cy="48" r="7" fill="#3d8569"/>
+            <text x="68" y="54" fill="#d6cfc2" font-family="monospace" font-size="16" font-weight="bold" letter-spacing="2">TT // LABS — MINECRAFT JAVA EDITION 26.3 (PACK FORMAT 121)</text>
+            <rect x="730" y="32" width="186" height="30" rx="6" fill="#3d8569" fill-opacity="0.18" stroke="#3d8569"/>
+            <text x="748" y="52" fill="#6ee7b7" font-family="monospace" font-size="14" font-weight="bold">100% VIBE CODED ✨</text>
+            <line x1="36" y1="80" x2="924" y2="80" stroke="#3d3630" stroke-width="1.5"/>
+            <text x="44" y="148" fill="#faf8f5" font-family="sans-serif" font-size="46" font-weight="bold" letter-spacing="1">⚡ OVERDOSE // DATA PACK SUITE</text>
+            <text x="46" y="186" fill="#b8afa3" font-family="sans-serif" font-size="20">Tactical Quality-of-Life Vanilla+ Suite • Zero Mods • Zero Resource Packs Required</text>
+            <rect x="44" y="224" width="276" height="144" rx="10" fill="#332e29" stroke="#524840"/>
+            <text x="64" y="258" fill="#e08b63" font-family="monospace" font-size="15" font-weight="bold">01 // OVERDOSE</text>
+            <text x="64" y="288" fill="#faf8f5" font-family="sans-serif" font-size="20" font-weight="bold">🪓 Tactical Tree Feller</text>
+            <text x="64" y="318" fill="#b8afa3" font-family="monospace" font-size="13">• Shift-to-Charge Safety Lock</text>
+            <text x="64" y="340" fill="#b8afa3" font-family="monospace" font-size="13">• 9×9×37 Wave Canopy Sweep</text>
+            <rect x="342" y="224" width="276" height="144" rx="10" fill="#332e29" stroke="#524840"/>
+            <text x="362" y="258" fill="#6ee7b7" font-family="monospace" font-size="15" font-weight="bold">02 // OVERDOSE-ARMOR</text>
+            <text x="362" y="288" fill="#faf8f5" font-family="sans-serif" font-size="20" font-weight="bold">🛡️ Invisible Armor</text>
+            <text x="362" y="318" fill="#b8afa3" font-family="monospace" font-size="13">• Equippable Data Component</text>
+            <text x="362" y="340" fill="#b8afa3" font-family="monospace" font-size="13">• Look Down + 2x Shift Toggle</text>
+            <rect x="640" y="224" width="276" height="144" rx="10" fill="#332e29" stroke="#524840"/>
+            <text x="660" y="258" fill="#eab308" font-family="monospace" font-size="15" font-weight="bold">03 // OVERDOSE-REFILL</text>
+            <text x="660" y="288" fill="#faf8f5" font-family="sans-serif" font-size="20" font-weight="bold">⚡ Auto Hotbar Refill</text>
+            <text x="660" y="318" fill="#b8afa3" font-family="monospace" font-size="13">• Hotbar 0-8 &amp; Offhand Refill</text>
+            <text x="660" y="340" fill="#b8afa3" font-family="monospace" font-size="13">• Auto Water/Lava Bucket Swap</text>
+        </svg>`
+    );
 
-const DEFAULT_POSTS = [];
+const DEFAULT_PROJECTS = [
+    {
+        id: "proj-overdose-datapack",
+        title: "OVERDOSE — Minecraft 26.3 Data Pack Suite",
+        tag: "Minecraft 26.3, Data Pack, Vibe Coding, mcfunction",
+        description:
+            "ชุด Data Pack สาย Tactical Quality-of-Life แบบ 100% Pure Vanilla สำหรับ Minecraft: Java Edition 26.3 (Wilderness Bound • Pack Format 121) ไม่ต้องลง Mod หรือ Resource Pack เสริม พัฒนาด้วยแนวคิด Vibe Coding 100% ประกอบด้วย 3 โมดูลหลัก:\n• Overdose Tree Feller: โค่นต้นไม้ทั้งต้น (9×9×37 บล็อก) พร้อมระบบกด Shift ชาร์จพลัง 5 จังหวะกันลั่น และรองรับทั้งการขุดปกติ + คลิกขวา 3D Raycast\n• Overdose Invisible Armor: ซ่อนโมเดล 3D ชุดเกราะเพื่อโชว์สกิน 100% ด้วย Item Data Components (minecraft:equippable) โดยค่าพลังป้องกันและไอคอนในกระเป๋าอยู่ครบ สลับด้วยคีย์ลัดก้มมองพื้น + กด Shift 2 ครั้ง\n• Overdose Auto Hotbar Refill: เติมไอเทมใน Hotbar 0–8 และมือซ้าย (Offhand) อัตโนมัติเมื่อใช้หมด สลับถังน้ำ/ถังลาวาต่อเนื่อง พร้อมระบบป้องกันการเติมตอนกด Q ทิ้งของ",
+        link: "https://github.com/theesirichai/overdose-datapack/releases",
+        github: "https://github.com/theesirichai/overdose-datapack",
+        image: OVERDOSE_BANNER_SVG,
+        progress: 100,
+        order: 0
+    }
+];
+
+const DEFAULT_POSTS = [
+    {
+        id: "post-overdose-datapack",
+        title: "เปิดตัว OVERDOSE Data Pack Suite สำหรับ Minecraft 26.3 — โปรเจกต์ 100% Vibe Coding แบบ Pure Vanilla ⚡🪓🛡️",
+        shortDate: "Oct 26",
+        fullDate: "Oct 26, 2026",
+        year: "2026",
+        order: 10,
+        images: [OVERDOSE_BANNER_SVG],
+        content: `ช่วงนี้ผมได้ทดลองทำโปรเจกต์สนุกๆ ในแล็บ (**TT // STUDIO — LABS**) คือการสร้างชุด Data Pack สาย **Tactical Quality-of-Life (QoL)** สำหรับ **Minecraft: Java Edition 26.3 (*Wilderness Bound* • Pack Format 121)** ในชื่อชุด **OVERDOSE // DATA PACK SUITE**
+
+ความพิเศษของโปรเจกต์นี้คือเป็น **100% Vibe Coded Project** ที่ขับเคลื่อนด้วยการออกแบบประสบการณ์ผู้เล่น (**Game UX Direction**) ร่วมกับ AI Agent ในการสังเคราะห์โครงสร้างไฟล์ \`.mcfunction\`, ระบบ Scoreboard State Machine, อัลกอริทึม 3D Raycast และฟีเจอร์ใหม่ล่าสุดอย่าง **Item Data Components** ของ Minecraft 26.3 ออกมาเป็นระบบที่ทำงานได้จริงแบบ **Pure Vanilla 100% (ไม่ต้องลง Mod และไม่ต้องใช้ Resource Pack แม้แต่ชิ้นเดียว)**
+
+---
+
+## 🧭 ภาพรวมทั้ง 3 โมดูลในชุด OVERDOSE
+
+ชุด Data Pack นี้ถูกแยกออกเป็น 3 โมดูลอิสระที่สามารถเลือกติดตั้งรวมกันหรือแยกเฉพาะฟีเจอร์ที่ชอบได้ทันที:
+
+| โมดูล (Folder) | ชื่อระบบ | หน้าที่หลัก | วิธีเรียกใช้งานในเกม |
+| :--- | :--- | :--- | :--- |
+| **\`overdose\`** | **Tactical Tree Feller** | โค่นต้นไม้ทั้งต้นในครั้งเดียว (สแกนพุ่มไม้ \`9×9×37\` บล็อก) พร้อมระบบชาร์จกันเผลอทุบบ้านพัง | ถือขวาน + กด \`Shift\` ย้ำๆ 5 ครั้งให้เต็ม \`100%\` แล้วตัดไม้หรือคลิกขวา |
+| **\`overdose-armor\`** | **Invisible Armor** | ซ่อนโมเดล 3D ชุดเกราะบนตัวละครเพื่อโชว์สกิน 100% โดยค่าพลังป้องกันและไอคอนในกระเป๋าอยู่ครบ | ก้มมองพื้นสุด + กด \`Shift\` 2 ครั้งติดกัน หรือพิมพ์ \`/trigger od_armor_menu\` |
+| **\`overdose-refill\`** | **Auto Hotbar Refill** | เติมบล็อก/ไอเทมใน Hotbar และมือซ้ายอัตโนมัติเมื่อใช้หมด + สลับถังน้ำ/ถังลาวาต่อเนื่อง | ทำงานอัตโนมัติทันที หรือตั้งค่าผ่าน \`/trigger od_help\` |
+
+---
+
+## 🪓 1. Overdose: Tactical Tree Feller (\`overdose\`)
+
+ปัญหาคลาสสิกของ Data Pack หรือปลั๊กอินตัดไม้ทั่วไปคือ **"เผลอถือขวานไปเคาะเสาบ้านไม้ตัวเอง แล้วบ้านพังลงมาทั้งหลัง"** ผมเลยออกแบบ UX ใหม่ให้มี **Shift-to-Charge Safety Lock** ที่จะทำงานเฉพาะตอนเราตั้งใจชาร์จพลังเท่านั้น
+
+### จุดเด่นทางเทคนิค
+- **Context-Aware HUD:** ตรวจจับการถือขวาน (\`#minecraft:axes\`) ในมือหลักและมือรอง แสดงสถานะบน Actionbar เฉพาะตอนถือขวาน และซ่อนตัวเองพร้อมรีเซ็ตค่าชาร์จทันทีที่สลับไปถือไอเทมอื่น
+- **Edge-Triggered Sneak Charge (5 จังหวะ):** กด \`Shift\` ย้ำๆ 5 ครั้ง (เพิ่มครั้งละ +20%) เมื่อครบ **100%** จะเข้าสู่สถานะ \`ACTIVE\` พร้อมเสียง \`block.beacon.activate\` และพาร์ติเคิลประกายไฟ
+- **Dual Execution (รองรับทั้ง Survival & Creative):**
+  1. **Left-Click Break:** ขุดทำลายท่อนไม้ตามปกติในโหมด Survival
+  2. **Right-Click 3D Raycast:** เล็งเป้าที่ต้นไม้แล้วคลิกขวาด้วยขวานเพื่อยิงลำแสง Raycast ทีละ \`0.5\` บล็อกและสั่งโค่นต้นไม้ได้ทันทีแม้ในโหมด Creative
+- **9×9×37 Wave-Based Canopy Scan:** ไต่ระดับความสูงขึ้นไปสูงสุด 37 ชั้น กวาดกิ่งไม้ที่ซ่อนอยู่ในพุ่มใบไม้ของต้นไม้ใหญ่ (เช่น Large Oak, Jungle, Mangrove, Cherry, Poplar, Crimson/Warped Stem) ลงมาจนเกลี้ยง
+
+\`\`\`text
+[ Idle (ถือขวาน) ]      [Overdose] 🪓 Shift to activate
+[ Charging (40%) ]      ⚡ [Overdose] [■■■■░░░░░░] 40%
+[ ACTIVE (100%)  ]      ⚡ [Overdose] 🪓 ACTIVE! Chop to Fell Tree! [■■■■■■■■■■] 100% ⚡
+\`\`\`
+
+---
+
+## 🛡️ 2. Overdose: 100% Vanilla Invisible Armor (\`overdose-armor\`)
+
+อยากโชว์สกินตัวเองเต็ม 100% เวลาเล่นกับเพื่อนในเซิร์ฟเวอร์ แต่ไม่อยากถอดเกราะทิ้ง และไม่อยากบังคับให้ทุกคนลง Mod หรือ Resource Pack เสริม โมดูลนี้จึงใช้ฟีเจอร์ **Item Data Components (\`minecraft:equippable\`)** ของตัวเกมโดยตรง
+
+### จุดเด่นทางเทคนิค
+- **ซ่อนเฉพาะโมเดล 3D บนตัวละคร:** ใช้ \`item_modifier\` เปลี่ยนเฉพาะค่า \`asset_id\` ในคอมโพเนนต์ \`minecraft:equippable\` ให้เป็น \`overdose_armor:invisible\` ส่งผลให้โมเดล 3D บนตัวหายไป แต่ **ค่าพลังป้องกัน (Armor / Toughness), Enchantments, Armor Trims, ความทนทาน และไอคอนในหน้าต่างกระเป๋า (Inventory) ยังแสดงผลครบ 100%**
+- **รองรับชุดเกราะทุกชนิดใน Java 26.3:** รวมถึงชุดเกราะทองแดง (**Copper Armor**), **Turtle Helmet**, และปีก **Elytra**
+- **In-Game Gesture Shortcut:** ไม่ต้องเสียเวลาพิมพ์คำสั่งขณะเล่น เพียง **ก้มหน้ามองพื้นสุด (มุมก้ม \`75°–90°\`) แล้วกด \`Shift\` 2 ครั้งติดกัน** เพื่อสลับซ่อน/แสดงเกราะทั้งหมดทันที
+- **Per-Slot Interactive Chat Menu:** พิมพ์ \`/trigger od_armor_menu\` เพื่อเลือกซ่อนเฉพาะชิ้นได้อิสระ (เช่น ซ่อนเฉพาะหมวกเพื่อโชว์หัวสกิน แต่ยังโชว์เสื้อเกราะกับรองเท้า)
+- **Smart Auto-Restore:** ทันทีที่ถอดเกราะมาไว้ในกระเป๋าหรือโยนลงพื้น ระบบจะคืนค่า \`asset_id\` ดั้งเดิมกลับคืนให้อัตโนมัติ สามารถนำไปวางโชว์บน Armor Stand หรือโยนให้เพื่อนได้โดยไม่บั๊ก
+
+---
+
+## ⚡ 3. Overdose: Auto Hotbar Refill (\`overdose-refill\`)
+
+โมดูลที่ช่วยให้การสร้างบ้าน ขุดเหมือง และต่อสู้ลื่นไหลขึ้นแบบไม่ต้องคอยเปิดกระเป๋าลากของมาใส่ Hotbar เอง:
+
+- **Auto Refill Hotbar (ช่อง 0–8) & Offhand:** เมื่อบล็อกก่อสร้าง, อาหาร, พลุ Fireworks, คบเพลิง, หรือ **Totem of Undying** ในมือถูกใช้จนหมด ระบบจะดึงไอเทมชนิดเดียวกันจากกระเป๋าเป้ (ช่อง 9–35) มาเติมใส่ช่องเดิมให้อัตโนมัติแบบรักษา NBT และ Component ครบถ้วน 100% (ย้ายไอเทมจริง ป้องกันการปั๊มของ 100%)
+- **Auto Bucket Swap (สลับถังน้ำ/ถังลาวาอัตโนมัติ):** เมื่อเทน้ำหรือลาวาลงพื้น ถังเปล่าในมือจะถูกสลับกับถังน้ำ/ถังลาวาใบใหม่ในกระเป๋าเป้ทันที ทำให้เทน้ำหรือลาวาต่อเนื่องรัวๆ ได้เลย
+- **Auto Tool Replacement:** เมื่อเครื่องมือ (Pickaxe, Axe, Shovel, Sword, Hoe, Shears) พังคามือ จะดึงเครื่องมือชนิดเดียวกันจากกระเป๋ามาถือแทนทันที
+- **Drop Protection (\`Q\` / \`Ctrl+Q\`):** ตรวจจับเมื่อผู้เล่นตั้งใจโยนของทิ้งเอง ระบบจะไม่ดึงของใหม่มาเติมซ้ำให้รำคาญ
+- **Interactive Settings Menu:** พิมพ์ \`/trigger od_help\` เพื่อเปิด/ปิดระบบเติมของ เสียงคลิกแจ้งเตือน หรือข้อความ Actionbar ได้รายบุคคลโดยไม่ต้องใช้สิทธิ์ OP
+
+---
+
+## 🚀 ดาวน์โหลดและติดตั้ง (GitHub & Releases)
+
+สามารถดูซอร์สโค้ดทั้งหมดหรือดาวน์โหลดไฟล์ \`.zip\` ไปวางในโฟลเดอร์ \`.minecraft/saves/<ชื่อโลก>/datapacks/\` แล้วพิมพ์ \`/reload\` ในเกมได้ทันทีครับ:
+
+- 📦 **GitHub Repository:** [github.com/theesirichai/overdose-datapack](https://github.com/theesirichai/overdose-datapack)
+- ⬇️ **Download Releases (.zip):** [Overdose Data Pack Suite Releases](https://github.com/theesirichai/overdose-datapack/releases)`
+    }
+];
 
 const DEFAULT_ABOUT = {
     id: "config_about_me",
@@ -1293,8 +1416,8 @@ function clearAllLegacyLocalStorage() {
     localStorage.removeItem("portweb_cloud_about_v2");
     localStorage.removeItem("portweb_cloud_home_v2");
 
-    projectsData = [];
-    postsData = [];
+    projectsData = structuredClone(DEFAULT_PROJECTS);
+    postsData = structuredClone(DEFAULT_POSTS);
     aboutData = structuredClone(DEFAULT_ABOUT);
     homeData = rescuedLocalHome ? structuredClone(rescuedLocalHome) : structuredClone(DEFAULT_HOME);
 
@@ -2262,20 +2385,35 @@ function init() {
         db = getFirestore(app);
 
         let latestPostDocs = null;
+        let latestProjDocs = null;
 
         const syncMissingConfigDocsIfAdmin = async () => {
-            if (!isAuthorized(currentUser) || !latestPostDocs) return;
-            const hasHome = latestPostDocs.some((d) => d.id === "config_home_data");
+            if (!isAuthorized(currentUser)) return;
             try {
-                if (!hasHome && rescuedLocalHome) {
-                    await setDoc(doc(db, "portweb_posts", "config_home_data"), {
-                        ...DEFAULT_HOME,
-                        ...rescuedLocalHome,
-                        id: "config_home_data",
-                        order: -2
-                    });
-                    rescuedLocalHome = null;
-                    flashStatus("ซิงค์หน้า Home & รูปโปรไฟล์ขึ้น Cloud แล้ว ✓");
+                if (latestPostDocs) {
+                    const hasHome = latestPostDocs.some((d) => d.id === "config_home_data");
+                    if (!hasHome && rescuedLocalHome) {
+                        await setDoc(doc(db, "portweb_posts", "config_home_data"), {
+                            ...DEFAULT_HOME,
+                            ...rescuedLocalHome,
+                            id: "config_home_data",
+                            order: -2
+                        });
+                        rescuedLocalHome = null;
+                        flashStatus("ซิงค์หน้า Home & รูปโปรไฟล์ขึ้น Cloud แล้ว ✓");
+                    }
+                    for (const seedPost of DEFAULT_POSTS) {
+                        if (!latestPostDocs.some((d) => d.id === seedPost.id)) {
+                            await setDoc(doc(db, "portweb_posts", seedPost.id), seedPost, { merge: true });
+                        }
+                    }
+                }
+                if (latestProjDocs) {
+                    for (const seedProj of DEFAULT_PROJECTS) {
+                        if (!latestProjDocs.some((d) => d.id === seedProj.id)) {
+                            await setDoc(doc(db, "portweb_projects", seedProj.id), seedProj, { merge: true });
+                        }
+                    }
                 }
             } catch (e) {
                 console.warn("Auto-sync config docs:", e);
@@ -2287,18 +2425,22 @@ function init() {
             await syncMissingConfigDocsIfAdmin();
         });
 
-        // ซิงค์ข้อมูลโปรเจกต์แบบเรียลไทม์จาก Firebase 100%
+        // ซิงค์ข้อมูลโปรเจกต์แบบเรียลไทม์จาก Firebase + Default Seed
         const qProj = query(collection(db, "portweb_projects"), orderBy("order", "asc"));
         onSnapshot(
             qProj,
-            (snapshot) => {
-                projectsData = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+            async (snapshot) => {
+                const cloudProjs = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+                latestProjDocs = cloudProjs;
+                const missingSeedProjs = DEFAULT_PROJECTS.filter((sp) => !cloudProjs.some((cp) => cp.id === sp.id));
+                projectsData = [...missingSeedProjs, ...cloudProjs];
                 renderProjects();
+                await syncMissingConfigDocsIfAdmin();
             },
             (err) => console.warn("Firestore projects sync waiting for DB/Rules:", err.message)
         );
 
-        // ซิงค์ข้อมูลบทความ + About Me + Home Card แบบเรียลไทม์จาก Firebase 100%
+        // ซิงค์ข้อมูลบทความ + About Me + Home Card แบบเรียลไทม์จาก Firebase + Default Seed
         const qPosts = query(collection(db, "portweb_posts"), orderBy("order", "desc"));
         onSnapshot(
             qPosts,
@@ -2318,7 +2460,9 @@ function init() {
                       ? { ...DEFAULT_HOME, ...rescuedLocalHome, id: "config_home_data" }
                       : structuredClone(DEFAULT_HOME);
 
-                postsData = allDocs.filter((d) => !isConfigDocId(d.id));
+                const cloudPosts = allDocs.filter((d) => !isConfigDocId(d.id));
+                const missingSeedPosts = DEFAULT_POSTS.filter((sp) => !cloudPosts.some((cp) => cp.id === sp.id));
+                postsData = [...missingSeedPosts, ...cloudPosts];
 
                 renderPostsList();
                 renderSinglePostView();
