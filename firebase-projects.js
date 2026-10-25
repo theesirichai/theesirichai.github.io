@@ -77,7 +77,7 @@ const DEFAULT_HOME = {
 const DEFAULT_AVATAR_SVG =
     "data:image/svg+xml;utf8," +
     encodeURIComponent(
-        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none"><rect width="200" height="200" fill="#1e1f23"/><circle cx="100" cy="78" r="34" fill="#383a3e"/><path d="M40 176c0-33.137 26.863-60 60-60s60 26.863 60 60" fill="#383a3e"/></svg>`
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none"><rect width="200" height="200" fill="#e5dfd3"/><circle cx="100" cy="78" r="34" fill="#a39b8e"/><path d="M40 176c0-33.137 26.863-60 60-60s60 26.863 60 60" fill="#a39b8e"/></svg>`
     );
 
 // ============================================================================
@@ -187,14 +187,39 @@ function renderPostsList() {
 
     // สำหรับหน้ารวมบทความ (posts.html)
     if (postsContainer) {
+        const countBadge = document.getElementById("posts-count-badge");
         if (sorted.length === 0) {
-            postsContainer.innerHTML = `<p style="color: #61656c;">ยังไม่มีบทความในระบบ</p>`;
+            if (countBadge) countBadge.textContent = "0 posts";
+            postsContainer.innerHTML = `<p style="color: var(--text-muted);">ยังไม่มีบทความในระบบ</p>`;
+            return;
+        }
+
+        const q = postsSearchQuery.toLowerCase().trim();
+        const filteredPosts = q
+            ? sorted.filter(
+                  (p) =>
+                      (p.title || "").toLowerCase().includes(q) ||
+                      (p.content || "").toLowerCase().includes(q) ||
+                      (p.year || "").toLowerCase().includes(q)
+              )
+            : sorted;
+
+        if (countBadge) {
+            countBadge.textContent = `Showing ${filteredPosts.length} of ${sorted.length} posts`;
+        }
+
+        if (filteredPosts.length === 0) {
+            postsContainer.innerHTML = `
+                <div class="empty-filter-state">
+                    <p>ไม่พบบทความที่ตรงกับคำค้นหา</p>
+                </div>
+            `;
             return;
         }
 
         // จัดกลุ่มตามปี (Year)
         const grouped = {};
-        for (const p of sorted) {
+        for (const p of filteredPosts) {
             const y = p.year || "2026";
             if (!grouped[y]) grouped[y] = [];
             grouped[y].push(p);
@@ -213,7 +238,7 @@ function renderPostsList() {
                         <li class="post-item">
                             <a href="post.html?id=${encodeURIComponent(p.id)}" class="post-link">
                                 ${escapeHtml(p.title)}
-                                ${p.images && p.images.length > 0 ? `<i class="fa-regular fa-image" style="margin-left:6px; font-size:0.8rem; color:#61656c;" title="มีรูปภาพประกอบ"></i>` : ""}
+                                ${p.images && p.images.length > 0 ? `<i class="fa-regular fa-image" style="margin-left:6px; font-size:0.8rem; color:var(--text-muted);" title="มีรูปภาพประกอบ"></i>` : ""}
                             </a>
                             <div class="post-right-meta">
                                 <span class="post-date">${escapeHtml(p.shortDate || "")}</span>
@@ -447,7 +472,7 @@ function renderProjects() {
     if (!projectListEl) return;
 
     if (projectsData.length === 0) {
-        projectListEl.innerHTML = `<p style="color: #61656c;">ยังไม่มีโปรเจกต์ในระบบ</p>`;
+        projectListEl.innerHTML = `<p style="color: var(--text-muted);">ยังไม่มีโปรเจกต์ในระบบ</p>`;
         const countBadge = document.getElementById("project-count-badge");
         if (countBadge) countBadge.textContent = "0 projects";
         return;
@@ -1055,7 +1080,7 @@ async function upsertHome(newHome) {
     }
 }
 
-// ฟังก์ชันวาดและดาวน์โหลดการ์ดโปรไฟล์ LPU Underground เป็นไฟล์ PNG คมชัดสูง (2x Retina)
+// ฟังก์ชันวาดและดาวน์โหลดการ์ดโปรไฟล์ LPU Underground เป็นไฟล์ PNG คมชัดสูง (2x Retina - Warm Paper Edition)
 async function downloadPassportCardPng() {
     const W = 1040;
     const H = 580;
@@ -1064,14 +1089,17 @@ async function downloadPassportCardPng() {
     canvas.height = H;
     const ctx = canvas.getContext("2d");
 
-    // 1. พื้นหลังการ์ดสีเข้มสไตล์ LPU Underground
-    ctx.fillStyle = "#1e1f23";
+    // 1. พื้นหลังการ์ดโทนกระดาษถนอมสายตา (Warm Cream / Parchment)
+    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+    bgGrad.addColorStop(0, "#faf8f5");
+    bgGrad.addColorStop(1, "#efeae0");
+    ctx.fillStyle = bgGrad;
     ctx.beginPath();
     ctx.roundRect(0, 0, W, H, 16);
     ctx.fill();
 
-    // จุด Grid Pattern บางๆ
-    ctx.fillStyle = "rgba(255, 255, 255, 0.04)";
+    // จุด Grid Pattern บางๆ โทนน้ำตาลเทาอุ่น
+    ctx.fillStyle = "rgba(44, 40, 37, 0.04)";
     for (let x = 20; x < W; x += 28) {
         for (let y = 20; y < H; y += 28) {
             ctx.fillRect(x, y, 2, 2);
@@ -1079,17 +1107,17 @@ async function downloadPassportCardPng() {
     }
 
     // เส้นขอบการ์ด
-    ctx.strokeStyle = "#383a3e";
+    ctx.strokeStyle = "#d8d0c1";
     ctx.lineWidth = 3;
     ctx.strokeRect(1.5, 1.5, W - 3, H - 3);
 
     // 2. ส่วนหัวการ์ด (Header)
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle = "#2e6f56";
     ctx.beginPath();
     ctx.arc(56, 56, 8, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = "#d1d4db";
+    ctx.fillStyle = "#2c2825";
     ctx.font = "bold 24px monospace";
     ctx.fillText(homeData.club || DEFAULT_HOME.club, 78, 64);
 
@@ -1097,16 +1125,16 @@ async function downloadPassportCardPng() {
     const badgeText = homeData.badge || DEFAULT_HOME.badge;
     ctx.font = "bold 20px monospace";
     const bw = ctx.measureText(badgeText).width + 32;
-    ctx.fillStyle = "rgba(34, 197, 94, 0.12)";
+    ctx.fillStyle = "rgba(46, 111, 86, 0.1)";
     ctx.fillRect(W - 48 - bw, 36, bw, 38);
-    ctx.strokeStyle = "rgba(34, 197, 94, 0.45)";
+    ctx.strokeStyle = "rgba(46, 111, 86, 0.35)";
     ctx.lineWidth = 1.5;
     ctx.strokeRect(W - 48 - bw, 36, bw, 38);
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle = "#2e6f56";
     ctx.fillText(badgeText, W - 32 - bw, 62);
 
     // เส้นคั่น Header
-    ctx.strokeStyle = "#2e3035";
+    ctx.strokeStyle = "#dfd8ca";
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(48, 96);
@@ -1118,7 +1146,7 @@ async function downloadPassportCardPng() {
     const py = 132;
     const pw = 210;
     const ph = 268;
-    ctx.fillStyle = "#141518";
+    ctx.fillStyle = "#e5dfd3";
     ctx.fillRect(px, py, pw, ph);
 
     try {
@@ -1135,12 +1163,12 @@ async function downloadPassportCardPng() {
         console.warn("Canvas image draw:", e);
     }
 
-    ctx.strokeStyle = "#45484f";
+    ctx.strokeStyle = "#cfc7b8";
     ctx.lineWidth = 2;
     ctx.strokeRect(px, py, pw, ph);
 
-    // มุมเขียว 4 มุมบนรูป
-    ctx.strokeStyle = "#22c55e";
+    // มุมเขียวเสจ 4 มุมบนรูป
+    ctx.strokeStyle = "#2e6f56";
     ctx.lineWidth = 4;
     const cl = 14;
     // TL
@@ -1154,15 +1182,15 @@ async function downloadPassportCardPng() {
 
     // 4. ข้อมูลผู้ถือบัตร (Holder Info)
     const ix = 296;
-    ctx.fillStyle = "#61656c";
+    ctx.fillStyle = "#827b73";
     ctx.font = "20px monospace";
     ctx.fillText("PASSPORT HOLDER", ix, 152);
 
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "#2c2825";
     ctx.font = "bold 36px 'Inter', sans-serif";
     ctx.fillText(homeData.nameEn || DEFAULT_HOME.nameEn, ix, 194);
 
-    ctx.fillStyle = "#92969c";
+    ctx.fillStyle = "#544f49";
     ctx.font = "26px 'Anuphan', sans-serif";
     ctx.fillText(homeData.nameTh || DEFAULT_HOME.nameTh, ix, 230);
 
@@ -1171,39 +1199,39 @@ async function downloadPassportCardPng() {
     const gy = 254;
     const gw = W - ix - 48;
     const gh = 146;
-    ctx.fillStyle = "rgba(0, 0, 0, 0.32)";
+    ctx.fillStyle = "rgba(44, 40, 37, 0.035)";
     ctx.fillRect(gx, gy, gw, gh);
-    ctx.strokeStyle = "#2e3035";
+    ctx.strokeStyle = "#dfd8ca";
     ctx.lineWidth = 2;
     ctx.strokeRect(gx, gy, gw, gh);
 
     const col2 = gx + gw / 2;
     // Row 1
-    ctx.fillStyle = "#61656c";
+    ctx.fillStyle = "#827b73";
     ctx.font = "18px monospace";
     ctx.fillText("REGISTRATION NO.", gx + 22, gy + 36);
     ctx.fillText("SPECIALIZATION", col2 + 12, gy + 36);
 
-    ctx.fillStyle = "#d1d4db";
+    ctx.fillStyle = "#2c2825";
     ctx.font = "bold 23px monospace";
     ctx.fillText(homeData.regNo || DEFAULT_HOME.regNo, gx + 22, gy + 64);
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle = "#2e6f56";
     ctx.fillText(homeData.spec || DEFAULT_HOME.spec, col2 + 12, gy + 64);
 
     // Row 2
-    ctx.fillStyle = "#61656c";
+    ctx.fillStyle = "#827b73";
     ctx.font = "18px monospace";
     ctx.fillText("STATUS", gx + 22, gy + 100);
     ctx.fillText("AFFILIATION", col2 + 12, gy + 100);
 
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle = "#2e6f56";
     ctx.font = "bold 23px monospace";
     ctx.fillText(homeData.status || DEFAULT_HOME.status, gx + 22, gy + 128);
-    ctx.fillStyle = "#d1d4db";
+    ctx.fillStyle = "#2c2825";
     ctx.fillText(homeData.affil || DEFAULT_HOME.affil, col2 + 12, gy + 128);
 
     // 5. ส่วนท้ายการ์ด (Barcode + MRZ)
-    ctx.strokeStyle = "#2e3035";
+    ctx.strokeStyle = "#dfd8ca";
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(48, 444);
@@ -1211,7 +1239,7 @@ async function downloadPassportCardPng() {
     ctx.stroke();
 
     // วาดแท่งบาร์โค้ด
-    ctx.fillStyle = "#d1d4db";
+    ctx.fillStyle = "#4a443e";
     const pattern = [4, 4, 8, 4, 2, 6, 6, 4, 2, 4, 8, 6, 4, 2, 6, 4, 8, 4, 2, 6];
     let bx = 48;
     for (let i = 0; i < 42; i++) {
@@ -1222,11 +1250,11 @@ async function downloadPassportCardPng() {
         bx += w + 3;
     }
 
-    ctx.fillStyle = "#61656c";
+    ctx.fillStyle = "#827b73";
     ctx.font = "19px monospace";
     ctx.fillText(homeData.mrz || DEFAULT_HOME.mrz, 48, 536);
 
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle = "#2e6f56";
     ctx.font = "bold 20px monospace";
     const verText = "VERIFIED ID // 2026";
     const vw = ctx.measureText(verText).width;
@@ -1709,7 +1737,7 @@ async function loadGitHubData() {
     }
 
     if (!data) {
-        reposContainer.innerHTML = `<p style="color: #61656c; font-size: 0.88rem;">สามารถดูโปรเจกต์โอเพนซอร์สทั้งหมดได้ที่ <a href="https://github.com/theesirichai" target="_blank" rel="noopener" style="color: #22c55e;">GitHub @theesirichai ↗</a></p>`;
+        reposContainer.innerHTML = `<p style="color: var(--text-muted); font-size: 0.88rem;">สามารถดูโปรเจกต์โอเพนซอร์สทั้งหมดได้ที่ <a href="https://github.com/theesirichai" target="_blank" rel="noopener" style="color: var(--accent-indigo);">GitHub @theesirichai ↗</a></p>`;
         return;
     }
 
@@ -1741,7 +1769,7 @@ async function loadGitHubData() {
             return `
             <a href="${escapeHtml(r.html_url)}" target="_blank" rel="noopener" class="github-repo-card">
                 <div class="github-repo-title">
-                    <span><i class="fa-regular fa-folder" style="color: #22c55e; margin-right: 6px;"></i>${escapeHtml(r.name)}</span>
+                    <span><i class="fa-regular fa-folder" style="color: var(--accent-indigo); margin-right: 6px;"></i>${escapeHtml(r.name)}</span>
                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </div>
                 <p class="github-repo-desc">${desc}</p>
@@ -1850,7 +1878,7 @@ function renderInboxMessages() {
     if (!container) return;
 
     if (messagesData.length === 0) {
-        container.innerHTML = `<p style="color: #61656c; text-align: center; padding: 24px;">ยังไม่มีข้อความส่งเข้ามา</p>`;
+        container.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 24px;">ยังไม่มีข้อความส่งเข้ามา</p>`;
         return;
     }
 

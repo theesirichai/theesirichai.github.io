@@ -17,12 +17,12 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600&family=Inter:wght@300;400;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=16">
+    <link rel="stylesheet" href="style.css?v=17">
 </head>
 <body>
 
     <aside class="left-sidebar">
-        <img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%20fill%3D%22none%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%231e1f23%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%2278%22%20r%3D%2234%22%20fill%3D%22%23383a3e%22%2F%3E%3Cpath%20d%3D%22M40%20176c0-33.137%2026.863-60%2060-60s60%2026.863%2060%2060%22%20fill%3D%22%23383a3e%22%2F%3E%3C%2Fsvg%3E" alt="Profile Image" class="profile-img">
+        <img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%20fill%3D%22none%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23e5dfd3%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%2278%22%20r%3D%2234%22%20fill%3D%22%23a39b8e%22%2F%3E%3Cpath%20d%3D%22M40%20176c0-33.137%2026.863-60%2060-60s60%2026.863%2060%2060%22%20fill%3D%22%23a39b8e%22%2F%3E%3C%2Fsvg%3E" alt="Profile Image" class="profile-img">
         
         <h1 class="profile-name">THEE D.</h1>
         <p class="profile-bio">Developer & Creator | TU-8505-CS</p>
@@ -73,7 +73,7 @@
                     <div class="lpu-card-body">
                         <div class="lpu-photo-wrap">
                             <div class="lpu-photo-frame">
-                                <img id="card-photo-display" src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%20fill%3D%22none%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%231e1f23%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%2278%22%20r%3D%2234%22%20fill%3D%22%23383a3e%22%2F%3E%3Cpath%20d%3D%22M40%20176c0-33.137%2026.863-60%2060-60s60%2026.863%2060%2060%22%20fill%3D%22%23383a3e%22%2F%3E%3C%2Fsvg%3E" alt="Profile Passport Photo" class="lpu-photo">
+                                <img id="card-photo-display" src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%20fill%3D%22none%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23e5dfd3%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%2278%22%20r%3D%2234%22%20fill%3D%22%23a39b8e%22%2F%3E%3Cpath%20d%3D%22M40%20176c0-33.137%2026.863-60%2060-60s60%2026.863%2060%2060%22%20fill%3D%22%23a39b8e%22%2F%3E%3C%2Fsvg%3E" alt="Profile Passport Photo" class="lpu-photo">
                                 <span class="lpu-corner tl"></span>
                                 <span class="lpu-corner tr"></span>
                                 <span class="lpu-corner bl"></span>
@@ -113,7 +113,7 @@
                             <div class="lpu-barcode-bars"></div>
                             <span id="card-mrz-display" class="lpu-mrz"></span>
                         </div>
-                        <span class="lpu-label" style="color: #22c55e;">VERIFIED ID // 2026</span>
+                        <span class="lpu-label" style="color: var(--accent-emerald); font-weight: 600;">VERIFIED ID // 2026</span>
                     </div>
                 </div>
 
@@ -158,7 +158,7 @@
                 </div>
 
                 <div class="github-repos-grid" id="github-repos-container">
-                    <p style="color: #61656c; font-size: 0.88rem;">กำลังโหลดข้อมูลจาก GitHub API...</p>
+                    <p style="color: var(--text-muted); font-size: 0.88rem;">กำลังโหลดข้อมูลจาก GitHub API...</p>
                 </div>
             </div>
 
@@ -245,8 +245,8 @@
                     <textarea id="home-intro-input" class="form-input" rows="4"></textarea>
                 </div>
 
-                <hr style="border: none; border-top: 1px solid #383a3e; margin: 18px 0;">
-                <p style="color: #d1d4db; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px;">ข้อมูลในการ์ดโปรไฟล์ (Underground Passport)</p>
+                <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 18px 0;">
+                <p style="color: var(--text-primary); font-size: 0.9rem; font-weight: 600; margin-bottom: 12px;">ข้อมูลในการ์ดโปรไฟล์ (Underground Passport)</p>
 
                 <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                     <div class="form-group" style="flex: 1; min-width: 180px;">
@@ -308,8 +308,8 @@
                     <div id="card-photo-preview-wrap"></div>
                 </div>
 
-                <hr style="border: none; border-top: 1px solid #383a3e; margin: 18px 0;">
-                <p style="color: #d1d4db; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px;">ข้อมูลแถบโปรไฟล์ด้านซ้าย &amp; โซเชียลมีเดีย (ซิงค์ทุกหน้า)</p>
+                <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 18px 0;">
+                <p style="color: var(--text-primary); font-size: 0.9rem; font-weight: 600; margin-bottom: 12px;">ข้อมูลแถบโปรไฟล์ด้านซ้าย &amp; โซเชียลมีเดีย (ซิงค์ทุกหน้า)</p>
 
                 <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                     <div class="form-group" style="flex: 1; min-width: 180px;">
@@ -359,11 +359,11 @@
                 <button type="button" id="btn-close-inbox" class="modal-close">&times;</button>
             </div>
             <div id="inbox-messages-container" class="inbox-messages-list">
-                <p style="color: #61656c;">กำลังโหลดข้อความ...</p>
+                <p style="color: var(--text-muted);">กำลังโหลดข้อความ...</p>
             </div>
         </div>
     </div>
 
-    <script type="module" src="firebase-projects.js?v=15"></script>
+    <script type="module" src="firebase-projects.js?v=17"></script>
 </body>
 </html>
